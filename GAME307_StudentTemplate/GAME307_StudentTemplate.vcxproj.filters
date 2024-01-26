@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene1.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Source\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="Steering\KinematicBody.cpp">
+      <Filter>Source\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBody.cpp">
+      <Filter>Source\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBody.cpp">
+      <Filter>Source\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="KinematicSeek.cpp">
+      <Filter>Source\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="KinematicSteeringOutput.cpp">
+      <Filter>Source\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="Seek.cpp">
+      <Filter>Source\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringBehaviour.cpp">
+      <Filter>Source\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="Steering\SteeringOutput.cpp">
+      <Filter>Source\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="Flee.cpp" />
+    <ClCompile Include="Scene2.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Graph.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Header\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="Steering\KinematicBody.h">
+      <Filter>Header\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBody.h">
+      <Filter>Header\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticBody.h">
+      <Filter>Header\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryMonitor.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Steering\SteeringOutput.h">
+      <Filter>Header\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="KinematicSeek.h">
+      <Filter>Header\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="Seek.h">
+      <Filter>Header\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="KinematicSteeringOutput.h">
+      <Filter>Header\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringBehaviour.h">
+      <Filter>Header\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="Flee.h" />
+    <ClInclude Include="Scene2.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Graph.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{5451fb2e-1940-48c1-abe3-0bcaf9114dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{ba5f90dc-331a-464b-a816-ff455178ce76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Game">
+      <UniqueIdentifier>{db188457-a343-435b-890d-952c75589353}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Movement">
+      <UniqueIdentifier>{61897aa7-9a24-40f8-800b-1a23f3f97722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Game">
+      <UniqueIdentifier>{90a02d8d-f619-4586-af7c-a25a6cbd85aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Movement">
+      <UniqueIdentifier>{e35b2a02-828f-4b46-8c14-a2d3cb5b8406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Behaviours">
+      <UniqueIdentifier>{d2c8a52c-4bae-4504-a2cc-64b5e43a3898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Behaviours">
+      <UniqueIdentifier>{66eebd98-bf63-432a-a768-6b60bd0e087d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
