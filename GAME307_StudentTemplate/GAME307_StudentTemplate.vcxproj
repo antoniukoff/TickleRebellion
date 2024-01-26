@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\GameDev\MathLibrary\include;C:\GameDev\SDL\include;$(SolutionDir)\GAME307_StudentTemplate;$(SolutionDir)\GAME307_StudentTemplate\Steering;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GameDev\MathLibrary\include;$(SolutionDir)GameDev\SDL\include;$(SolutionDir)\GAME307_StudentTemplate;$(SolutionDir)\GAME307_StudentTemplate\Steering;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
