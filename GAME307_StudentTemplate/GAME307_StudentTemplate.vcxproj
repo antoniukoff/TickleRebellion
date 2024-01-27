@@ -144,6 +144,7 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="KinematicArrive.cpp" />
     <ClCompile Include="KinematicSeek.cpp" />
+    <ClCompile Include="KinematicSeparation.cpp" />
     <ClCompile Include="KinematicSteeringOutput.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Graph.h" />
     <ClInclude Include="KinematicArrive.h" />
     <ClInclude Include="KinematicSeek.h" />
+    <ClInclude Include="KinematicSeperation.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MemoryMonitor.h" />

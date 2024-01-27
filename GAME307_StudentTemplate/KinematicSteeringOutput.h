@@ -18,8 +18,15 @@ public:
 	~KinematicSteeringOutput();
 
 	KinematicSteeringOutput(Vec3 vel_, float rot_);
-	
 
+	inline const KinematicSteeringOutput operator + (const KinematicSteeringOutput& v) const {
+		return KinematicSteeringOutput(velocity + v.velocity, rotation + v.rotation);
+	}
+	inline KinematicSteeringOutput& operator += (const KinematicSteeringOutput& v) {
+		velocity += v.velocity;
+		rotation += v.rotation;
+		return *this;
+	}
 
 	// This class does not have any behaviours, just constructors!
 

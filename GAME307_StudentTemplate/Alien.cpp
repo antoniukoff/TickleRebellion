@@ -1,7 +1,9 @@
 #include "Alien.h"
 #include "Scene.h"
 #include "KinematicArrive.h"
+#include "KinematicSeperation.h"
 #include "SpriteSheet.h"
+#include <vector>
 
 Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 	: body(nullptr), scene(scene_)
@@ -10,11 +12,11 @@ Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 
 	if (!body)
 	{
-		float radius = 2.5;
+		float radius = 2.5f;
 		float orientation = 0.0f;
 		float rotation = 0.0f;
 		float angular = 0.0f;
-		float maxSpeed = 5.0f;
+		float maxSpeed = 3.0f;
 		float maxAcceleration = 10.0f;
 		float maxRotation = 2.0f;
 		float maxAngular = 10.0f;
@@ -34,11 +36,12 @@ Alien::~Alien()
 }
 
 
-void Alien::Update(float deltaTime, Body* target)
+void Alien::Update(float deltaTime, Body* target, std::vector<Alien*> aliens, float threshhold, int index)
 {
 	// create a new overall steering output
+	std::vector<KinematicSteeringOutput*> steering_outputs;
 	KinematicSteeringOutput* steering = nullptr;
-	SteerToArrive(steering, target);
+	SteerToArrive(steering, target, aliens, threshhold, index);
 	body->Update(deltaTime, steering);
 
 	delete steering;
@@ -134,11 +137,37 @@ void Alien::Render()
 	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, square, 1.0f, true);
 }
 
-void Alien::SteerToArrive(KinematicSteeringOutput*& steering, Body* target)
+void Alien::SteerToArrive(KinematicSteeringOutput*& steering, Body* target, std::vector<Alien*> aliens, float threshhold, int index)
 {
+	
+	steering = new KinematicSteeringOutput();
+
+	std::vector<StaticBody* > staticBodies;
+	staticBodies.resize(aliens.size());
+	for (uint32_t i = 0; i < aliens.size(); i++) {
+		staticBodies[i] = aliens[i]->body;
+	}
+
+	std::vector<KinematicSteeringOutput*> steering_outputs;
+
 	KinematicArrive* steering_algorithm = new KinematicArrive(body, target);
-	steering = steering_algorithm->getSteering();
-	delete steering_algorithm;
+	steering_outputs.push_back(steering_algorithm->getSteering());
+
+	KinematicSeperation* separation = new KinematicSeperation(staticBodies, 1.5f, index);
+	steering_outputs.push_back(separation->GetSteering());
+
+	for (int i = 0; i < steering_outputs.size(); i++) {
+		if (steering_outputs[i]) {
+			*steering += *steering_outputs[i];
+		}
+		delete steering_outputs[i];
+	}
+	if (steering_algorithm) {
+		delete steering_algorithm;
+	}
+	if (separation) {
+		delete separation;
+	}
 }
 
 bool Alien::setTextureWith(std::string file)

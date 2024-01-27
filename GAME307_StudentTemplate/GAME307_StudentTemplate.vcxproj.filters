@@ -63,6 +63,7 @@
     </ClCompile>
     <ClCompile Include="Alien.cpp" />
     <ClCompile Include="KinematicArrive.cpp" />
+    <ClCompile Include="KinematicSeparation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -130,6 +131,7 @@
     </ClInclude>
     <ClInclude Include="Alien.h" />
     <ClInclude Include="KinematicArrive.h" />
+    <ClInclude Include="KinematicSeperation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

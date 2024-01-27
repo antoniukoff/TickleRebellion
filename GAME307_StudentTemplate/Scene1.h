@@ -27,6 +27,7 @@ private:
 	static std::mt19937 mt;
 	static std::uniform_real_distribution<float> distX;
 	static std::uniform_real_distribution<float> distY;
+	float timeToAdd = 200.0f, frameTime = 0.0f;
 
 public:
 	Scene1(SDL_Window* sdlWindow, GameManager* game_);
@@ -43,7 +44,7 @@ public:
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 	float getWindowWidth() { return w; }
 	float getWindowHeight() { return h; }
-	
+	void spawnAlien();
 };
 
 #endif

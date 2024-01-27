@@ -67,10 +67,12 @@ void Scene1::Update(const float deltaTime) {
 
 	myCharacter->Update(deltaTime);
 
-	for (auto& alien : aliens) {
-		alien->Update(deltaTime, myCharacter->getBody());
+	for (int i = 0; i < aliens.size(); i++) {
+		aliens[i]->Update(deltaTime, myCharacter->getBody(), aliens, 3.0f, i);
 	}
 
+
+	spawnAlien();
 	// Update player
 }
 
@@ -95,4 +97,16 @@ void Scene1::HandleEvents(const SDL_Event& event)
 	level.levelHandleEvents(event);
 	// send events to player as needed
 	myCharacter->HandleEvents(event);
+}
+
+void Scene1::spawnAlien()
+{
+	if (frameTime >= timeToAdd) {
+		Vec3 position = { distX(mt), distY(mt), 0.0f };
+		Alien* alien = new Alien(position, this, "SHEET.PNG");
+
+		aliens.push_back(alien);
+		frameTime = 0.0f;
+	} else
+		frameTime += distX(mt) * 0.1f;
 }
