@@ -31,13 +31,7 @@
     <ClCompile Include="StaticBody.cpp">
       <Filter>Source\Movement</Filter>
     </ClCompile>
-    <ClCompile Include="KinematicSeek.cpp">
-      <Filter>Source\Behaviours</Filter>
-    </ClCompile>
     <ClCompile Include="KinematicSteeringOutput.cpp">
-      <Filter>Source\Behaviours</Filter>
-    </ClCompile>
-    <ClCompile Include="Seek.cpp">
       <Filter>Source\Behaviours</Filter>
     </ClCompile>
     <ClCompile Include="SteeringBehaviour.cpp">
@@ -46,12 +40,28 @@
     <ClCompile Include="Steering\SteeringOutput.cpp">
       <Filter>Source\Behaviours</Filter>
     </ClCompile>
-    <ClCompile Include="Flee.cpp" />
-    <ClCompile Include="Scene2.cpp">
+    <ClCompile Include="Flee.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteSheet.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Seek.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="KinematicSeek.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Alien.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -90,24 +100,34 @@
     <ClInclude Include="Steering\SteeringOutput.h">
       <Filter>Header\Behaviours</Filter>
     </ClInclude>
-    <ClInclude Include="KinematicSeek.h">
-      <Filter>Header\Behaviours</Filter>
-    </ClInclude>
-    <ClInclude Include="Seek.h">
-      <Filter>Header\Behaviours</Filter>
-    </ClInclude>
     <ClInclude Include="KinematicSteeringOutput.h">
       <Filter>Header\Behaviours</Filter>
     </ClInclude>
     <ClInclude Include="SteeringBehaviour.h">
       <Filter>Header\Behaviours</Filter>
     </ClInclude>
-    <ClInclude Include="Flee.h" />
-    <ClInclude Include="Scene2.h">
+    <ClInclude Include="Flee.h">
+      <Filter>Header\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="Graph.h" />
+    <ClInclude Include="Level.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheet.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Seek.h">
+      <Filter>Header\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="KinematicSeek.h">
+      <Filter>Header\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Alien.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -133,6 +153,12 @@
     </Filter>
     <Filter Include="Source\Behaviours">
       <UniqueIdentifier>{66eebd98-bf63-432a-a768-6b60bd0e087d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\AI">
+      <UniqueIdentifier>{30674e9c-c415-4368-b75a-5aa805fc094d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\AI">
+      <UniqueIdentifier>{bea73e54-c051-49cf-a79f-03d66e97df98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

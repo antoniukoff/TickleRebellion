@@ -1,38 +1,43 @@
 #include "Character.h"
+#include "SpriteSheet.h"
+#include "PlayerBody.h"
+#include "KinematicSeek.h"
+#include "KinematicSeek.h"
+#include <random>
 
+static std::mt19937 randomEngine(time(nullptr));
+static std::uniform_real_distribution<float> scaleGenerator(0.8f, 1.0f);
 
-bool Character::OnCreate(Scene* scene_)
+Character::~Character()
+{
+}
+
+bool Character::OnCreate(Scene* scene_, std::string filename, Vec3 pos)
 {
 	scene = scene_;
+	scale = 1.0f;
+	maxHP = 8.0f;
+	curHP = maxHP;
 
-	// Configure and instantiate the body to use for the demo
 	if (!body)
 	{
-		float radius = 0.2;
+		float radius = 2.5;
 		float orientation = 0.0f;
 		float rotation = 0.0f;
 		float angular = 0.0f;
-		float maxSpeed = 4.0f;
+		float maxSpeed = 5.0f;
 		float maxAcceleration = 10.0f;
 		float maxRotation = 2.0f;
 		float maxAngular = 10.0f;
-		body = new KinematicBody(
-			Vec3(10.0f, 5.0f, 0), Vec3(0, 0, 0), Vec3(0, 0, 0), 1.0f,
-			radius,
-			orientation,
-			rotation,
-			angular,
-			maxSpeed,
-			maxAcceleration,
-			maxRotation,
-			maxAngular
-		);
+		body = new PlayerBody(pos, Vec3(), Vec3(), 1.0f, radius, orientation, rotation, angular, maxSpeed, maxAcceleration, maxRotation, maxAngular, scene->game);
 	}
 
 	if (!body)
 	{
 		return false;
 	}
+
+	setTextureWith(filename);
 
 	return true;
 }
@@ -41,15 +46,15 @@ bool Character::setTextureWith(string file)
 {
 	SDL_Surface* image = IMG_Load(file.c_str());
 	if (image == nullptr) {
-		std::cerr << "Can't open the image" << std::endl;
+		throw std::runtime_error("Incorrect filepath");
 		return false;
 	}
 	SDL_Window* window = scene->getWindow();
 	SDL_Renderer* renderer = SDL_GetRenderer(window);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-	if (!texture) 
+	if (!texture)
 	{
-		std::cerr << "Can't create texture" << std::endl;
+		throw std::runtime_error("Failed to create texture");
 		return false;
 	}
 	body->setTexture(texture);
@@ -59,84 +64,47 @@ bool Character::setTextureWith(string file)
 
 void Character::Update(float deltaTime)
 {
-	// create a new overall steering output
-	SteeringOutput* steering = new SteeringOutput();
-	//steering = NULL;
 
-
-	// this is just one of the possible behaviours based on state machine
-	//SteerToSeekPlayer(*steering);
-	SteerToFleePlayer(*steering);
-
-	// set the target for steering; target is used by the steerTo... functions
-	// (often the target is the Player)
-
-	// apply the steering to the equations of motion
-	body->Update(deltaTime, steering);
-
-	// clean up memory
-	// (delete only those objects created in this function)
-	if (steering) {
-		delete steering;
-	}
-}
-
-void Character::SteerToSeekPlayer(SteeringOutput& steering)
-{
-
-	std::vector<SteeringOutput*> steering_outputs;
-	PlayerBody* target = scene->game->getPlayer();
-
-	// using the target, calculate and set values in the overall steering output
-	SteeringBehaviour* steering_algorithm = new Seek(body, target);
-
-	steering_outputs.push_back(steering_algorithm->GetSteering());
-
-	for (int i = 0; i < steering_outputs.size(); i++) {
-
-		if (steering_outputs[i]) {
-			steering += *steering_outputs[i];
-		}
-	}
-		
-
-	if (steering_algorithm) {
-		delete steering_algorithm;
-	}
-}
-
-void Character::SteerToFleePlayer(SteeringOutput& steering)
-{
-	std::vector<SteeringOutput*> steering_outputs;
-	PlayerBody* target = scene->game->getPlayer();
-
-	// using the target, calculate and set values in the overall steering output
-	SteeringBehaviour* steering_algorithm = new Flee(body, target);
-
-	steering_outputs.push_back(steering_algorithm->GetSteering());
-
-	for (int i = 0; i < steering_outputs.size(); i++) {
-
-		if (steering_outputs[i]) {
-			steering += *steering_outputs[i];
-		}
-	}
-
-
-	if (steering_algorithm) {
-		delete steering_algorithm;
-	}
+	body->Update(deltaTime);
 
 }
 
-
-void Character::HandleEvents(const SDL_Event& event)
+void Character::RenderUI()
 {
-	// handle events here, if needed
+	SDL_Renderer* renderer = scene->game->getRenderer();
+	Matrix4 projectionMatrix = scene->getProjectionMatrix();
+
+	SDL_Rect HPoutline;
+	SDL_Rect HPfill;
+	Vec3 screenCoords;
+	float    w = 40, h = 10;
+
+	// notice use of "body" in the following
+
+	w = static_cast<int>(w);
+	h = static_cast<int>(h);
+	screenCoords = projectionMatrix * body->getPos();
+
+	HPoutline.y = static_cast<int>(screenCoords.y - 2.8f * h * scale);
+	HPoutline.x = static_cast<int>(screenCoords.x - 1.5f * w);
+	HPoutline.w = w;
+	HPoutline.h = h;
+
+	HPfill = HPoutline;
+	HPfill.w = curHP / maxHP * w;
+	// red for fill
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &HPfill);
+
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderDrawRect(renderer, &HPoutline);
 }
 
-void Character::render(float scale)
+void Character::render()
 {
+
+	scale = ((scene->getWindowHeight() / 4.0f) - (body->getPos().y * scene->getyAxis())) / (scene->getWindowHeight() / 4.0f);
 	SDL_Renderer* renderer = scene->game->getRenderer();
 	Matrix4 projectionMatrix = scene->getProjectionMatrix();
 
@@ -149,15 +117,80 @@ void Character::render(float scale)
 	w = static_cast<int>(w * scale);
 	h = static_cast<int>(h * scale);
 	screenCoords = projectionMatrix * body->getPos();
-	square.x = static_cast<int>(screenCoords.x - 0.5f * w);
-	square.y = static_cast<int>(screenCoords.y - 0.5f * h);
+	square.y = static_cast<int>(screenCoords.y - 0.5 * h);
+	square.x = static_cast<int>(screenCoords.x - 0.5 * w);
 	square.w = w;
 	square.h = h;
 
 	// Convert character orientation from radians to degrees.
-	float orientation = body->getOrientation() * 180.0f / M_PI;
 
-	SDL_RenderCopyEx(renderer, body->getTexture(), nullptr, &square,
-		orientation, nullptr, SDL_FLIP_NONE);
+	int numFrames = 0;
+	int FRAME_SPEED = 50;
+
+	SpriteSheet::QuerySpriteSheet(8, 3, body->getTexture());
+
+	if (body->getVel().x > 0.2f && abs(body->getVel().x) > abs(body->getVel().y)) {
+		direction = Direction::RIGHT;
+	}
+	else if (body->getVel().x < -0.2f && abs(body->getVel().x) > abs(body->getVel().y)) {
+		direction = Direction::LEFT;
+	}
+	else if (body->getVel().y > 0.2f && abs(body->getVel().y) > abs(body->getVel().x)) {
+		direction = Direction::FORWARD;
+	}
+	else if (body->getVel().y < -0.2f && abs(body->getVel().y) > abs(body->getVel().x)) {
+		direction = Direction::BACKWARD;
+	}
+	else {
+		direction = Direction::IDLE;
+	}
+	int startPosX = 0;
+	int tileIndexY = 0;
+	int tileIndexX = 0;
+
+	SpriteSheet::QuerySpriteSheet(9, 4, body->getTexture());
+	switch (direction) {
+	case Direction::RIGHT:
+		numFrames = 3;
+		startPosX = 0;
+		tileIndexY = 2;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+
+	case Direction::LEFT:
+		numFrames = 3;
+		startPosX = 0;
+		tileIndexY = 0;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+
+	case Direction::BACKWARD:
+		numFrames = 3;
+		startPosX = 0;
+		tileIndexY = 1;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+
+	case Direction::FORWARD:
+		numFrames = 3;
+		startPosX = 0;
+		tileIndexY = 3;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+	case Direction::IDLE:
+
+		sourceRect = SpriteSheet::GetUVTile(1, 3);
+		break;
+	}
+	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, square, 1.0f, true);
+}
+
+void Character::HandleEvents(const SDL_Event& event)
+{
+	body->HandleEvents(event);
 }
 

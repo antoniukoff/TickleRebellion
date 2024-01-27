@@ -1,6 +1,5 @@
 #include "GameManager.h"
 #include "Scene1.h"
-#include "Scene2.h"
 //#include "MemoryMonitor.h"
 
 GameManager::GameManager() {
@@ -18,8 +17,8 @@ bool GameManager::OnCreate() {
     //const int SCREEN_HEIGHT = 860;
 
     // Use 1000x600 for less than full screen
-    const int SCREEN_WIDTH = 1000;
-    const int SCREEN_HEIGHT = 600;
+    const int SCREEN_WIDTH = 1280;
+    const int SCREEN_HEIGHT = 720;
 
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
@@ -215,7 +214,6 @@ void GameManager::LoadScene( int i )
             currentScene = new Scene1( windowPtr->GetSDL_Window(), this);
             break;
         case 2:
-            currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
             break;
         default:
             currentScene = new Scene1( windowPtr->GetSDL_Window(), this );

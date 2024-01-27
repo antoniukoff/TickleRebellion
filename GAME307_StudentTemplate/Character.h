@@ -2,44 +2,56 @@
 #define CHARACTER_H
 
 #include <vector>
-
 #include "Scene.h"
-#include "KinematicBody.h"
-#include "Seek.h"
-#include "Flee.h"
-
+#include "StaticBody.h"
+#include "Graph.h"
 
 using namespace std;
 
+class Turret;
+
+enum class Direction {
+	RIGHT,
+	LEFT,
+	FORWARD,
+	BACKWARD,
+	IDLE
+};
 class Character
 {
 private:
-	class KinematicBody* body;
+	class PlayerBody* body;
 	class Scene* scene;
+	SDL_Rect sourceRect;
+	Direction direction = Direction::IDLE;
+	float scale = 1.0f;
 
+
+	class DesicionTreeNode* desicionTree;
+	Turret* closestTurret;
+
+	float maxHP;
+	float curHP;
 public:
-	Character()
+	Character() :sourceRect{}
 	{
 		body = NULL;
 		scene = NULL;
 	};
 
-	~Character()
-	{
-		if (body) delete body;
-	};
+	~Character();
 
-	bool OnCreate(Scene* scene_);
-	void OnDestroy() {};
+	bool OnCreate(Scene* scene_, std::string filename, Vec3 pos);
+	void OnDestroy() { /*delete body;*/ scene = nullptr; };
 	bool setTextureWith(string file);
-	void Update(float time);
+	void Update(float deltaTime);
+	void render();
 	void HandleEvents(const SDL_Event& event);
-	void render(float scale = 1.0f);
-
-	void SteerToSeekPlayer(SteeringOutput& steering);
-	void SteerToFleePlayer(SteeringOutput& steering);
 
 
+	void TakeDamage(float dmg) { curHP -= dmg; };
+	bool isDead() { return (curHP <= 0) ? true : false; }
+	void RenderUI();
 };
 
 #endif

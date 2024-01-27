@@ -1,4 +1,3 @@
-
 #ifndef MEMORYMONITOR_H
 #define MEMORYMONITOR_H
 #include <iostream>
@@ -11,9 +10,6 @@ float maxMem = 0;
 
 // new normally includes return std::malloc(numBytes);
 // all we are adding is the print out
-
-
-
 
 void* operator new(std::size_t numBytes) {
     std::cout << "allocating " << numBytes << " bytes of memory\n";
@@ -30,8 +26,6 @@ void operator delete(void* memoryLocation, std::size_t numBytes) {
     totalDeallocations++;
 
 }
-
-
 
 struct ArraySize {
     // defines the size of the array that is being made
@@ -60,9 +54,5 @@ void operator delete[](void* memoryLocation) {
 
     free(array);
 }
-
-
-
-
 
 #endif

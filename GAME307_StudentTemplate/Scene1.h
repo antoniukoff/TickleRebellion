@@ -6,22 +6,20 @@
 #include "Scene.h"
 #include "Character.h"
 #include "StaticBody.h"
-
+#include "Level.h"
 
 using namespace MATH;
 class Scene1 : public Scene {
 private:
 	SDL_Window *window;
+	int w, h;
 	float xAxis = 25.0f;
 	float yAxis = 15.0f;
 	SDL_Renderer* renderer;
 	Matrix4 projectionMatrix;
     Matrix4     inverseProjection;
-
-	Character* blinky;
-
-	StaticBody* myNPC;
-	
+	Character* myCharacter;
+	Level level;
 
 public:
 	Scene1(SDL_Window* sdlWindow, GameManager* game_);
@@ -36,6 +34,8 @@ public:
 	SDL_Window* getWindow() { return window; }
     Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
+	float getWindowWidth() { return w; }
+	float getWindowHeight() { return h; }
 };
 
 #endif
