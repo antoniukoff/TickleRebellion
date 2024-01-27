@@ -2,6 +2,10 @@
 #include "KinematicSeek.h"
 
 
+std::mt19937 Scene1::mt = std::mt19937(std::random_device()());
+std::uniform_real_distribution<float> Scene1::distX = std::uniform_real_distribution<float>();
+std::uniform_real_distribution<float> Scene1::distY = std::uniform_real_distribution<float>();
+
 Scene1::Scene1(SDL_Window* sdlWindow_, GameManager* game_){
 	window = sdlWindow_;
     game = game_;
@@ -28,37 +32,28 @@ bool Scene1::OnCreate() {
 	level.loadMap(12, 11, "tilemap.png");
 	level.sortTiles();
 	// Set player image to PacMan
+	float floatMin= std::numeric_limits<float>::min();
+	for (auto& tile : level.getTiles()) {
+		if (tile->tileNode != nullptr && tile->tileNode->getPosition().y > floatMin)
+		{
+			floatMin = tile->tileNode->getPosition().y;
+		}
+	}
 
-	SDL_Surface* image;
-	SDL_Texture* texture;
+	yCap = floatMin;
+	game->setEndBoundary(yCap);
+
+	distX = std::uniform_real_distribution<float>(0.0f, xAxis);
+	distY = std::uniform_real_distribution<float>(0.0f, game->getEndBoundary());
 
 	myCharacter = new Character();
 	myCharacter->OnCreate(this, "human_base.png", Vec3{ 10.0f, 0.0f, 0.0f });
-	image = IMG_Load("pacman.png");
-	texture = SDL_CreateTextureFromSurface(renderer, image);
-	game->getPlayer()->setImage(image);
-	game->getPlayer()->setTexture(texture);
+	
 
+	Vec3 position = { distX(mt), distY(mt), 0.0f };
+	Alien* alien = new Alien(position, this, "SHEET.PNG");
 
-	float orientation_ = 0.0f;
-	float maxSpeed_ = 5.0f;
-	float maxRotation_ = 1.0f;
-	Vec3 position_(5.0f, 5.0f, 0.0f);
-
-
-	if (image == nullptr){
-		std::cerr << "Can't open Clyde.png" << endl;
-		return false;
-	}
-	if (texture == nullptr) {
-		std::cerr << "Can't create Clyde texture" << endl;
-		return false;
-	}
-
-	SDL_FreeSurface(image);
-
-
-	// end of character set ups
+	aliens.push_back(alien);
 
 	return true;
 }
@@ -72,6 +67,10 @@ void Scene1::Update(const float deltaTime) {
 
 	myCharacter->Update(deltaTime);
 
+	for (auto& alien : aliens) {
+		alien->Update(deltaTime, myCharacter->getBody());
+	}
+
 	// Update player
 }
 
@@ -80,9 +79,11 @@ void Scene1::Render() {
 	SDL_RenderClear(renderer);
 
 
-
 	level.drawTiles();
 	myCharacter->render();
+	for (auto& alien : aliens) {
+		alien->Render();
+	}
 	// render the player
 
 	SDL_RenderPresent(renderer);

@@ -26,6 +26,7 @@ private:
     class PlayerBody *player;
     Uint32 changeSceneEventType; // event type number for user defined events
     bool launched = true;
+	float yCap = 0.0f;
 
 public:
 	GameManager();
@@ -38,6 +39,8 @@ public:
     PlayerBody* getPlayer(){ return player; }
 	Uint32 getChangeScene() { return changeSceneEventType; }
 
+	void setEndBoundary(float y) { yCap = y; }
+	float getEndBoundary() { return yCap; }
 	SDL_Renderer* getRenderer();
 	void RenderPlayer(float scale = 1.0f);
 	void Run();

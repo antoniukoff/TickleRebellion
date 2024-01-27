@@ -142,6 +142,7 @@
     <ClCompile Include="Flee.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="KinematicArrive.cpp" />
     <ClCompile Include="KinematicSeek.cpp" />
     <ClCompile Include="KinematicSteeringOutput.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Flee.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="KinematicArrive.h" />
     <ClInclude Include="KinematicSeek.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
     <ClInclude Include="Level.h" />

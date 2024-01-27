@@ -131,6 +131,11 @@ void Level::loadMap(const int& tileSizeX, const int& tileSizeY, const char* file
             position = { positionX, positionY, 0.0f };
 
             newNode = new Node{ label, position };
+            if (y == m_levelData.size() - 1&& x == m_levelData[y].size() - 1)
+            {
+                newNode = nullptr;
+			}
+				
 
             switch (tile) {
                 
@@ -154,10 +159,14 @@ void Level::loadMap(const int& tileSizeX, const int& tileSizeY, const char* file
                 newTile = new Tile{ nullptr, mapTexture, bottomRect, gridPosition, 1.0, false, true, newNode };
                 break;
             case 'P':
-            case 'L':
-            case 'R':
                 // Assuming 'P', 'L', and 'R' have similar tile characteristics
                 newTile = new Tile{ nullptr, mapTexture, pathRect, gridPosition, 1.0, false, true, newNode };
+                break;
+            case 'L':
+                newTile = new Tile{ nullptr, mapTexture, leftGrassRect, gridPosition, 1.0, false, true, newNode };
+                break;
+            case 'R':
+                newTile = new Tile{ nullptr, mapTexture, rightGrassRect, gridPosition, 1.0, false, true, newNode };
                 break;
             case '1':
                 newTile = new Tile{ nullptr, mapTexture, bottomLeftGrassCorner, gridPosition, 1.0, false, true, newNode };
@@ -171,7 +180,7 @@ void Level::loadMap(const int& tileSizeX, const int& tileSizeY, const char* file
                 newTile = new Tile{ childTile, mapTexture, doorRect, gridPosition, 2.0, true, false, newNode };
                 break;
             case ' ':
-                newTile = new Tile{ nullptr, mapTexture, noTile, gridPosition, 1.0, false, false, newNode };
+                newTile = new Tile{ nullptr, mapTexture, noTile, gridPosition, 1.0, false, false, nullptr };
                 break;
                 
             default:

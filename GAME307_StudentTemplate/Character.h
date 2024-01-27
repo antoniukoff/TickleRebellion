@@ -52,6 +52,7 @@ public:
 	void TakeDamage(float dmg) { curHP -= dmg; };
 	bool isDead() { return (curHP <= 0) ? true : false; }
 	void RenderUI();
+	Body* getBody() { return body; }
 };
 
 #endif

@@ -21,7 +21,7 @@ bool Character::OnCreate(Scene* scene_, std::string filename, Vec3 pos)
 
 	if (!body)
 	{
-		float radius = 2.5;
+		float radius = 0.0f;
 		float orientation = 0.0f;
 		float rotation = 0.0f;
 		float angular = 0.0f;
@@ -105,6 +105,7 @@ void Character::render()
 {
 
 	scale = ((scene->getWindowHeight() / 4.0f) - (body->getPos().y * scene->getyAxis())) / (scene->getWindowHeight() / 4.0f);
+
 	SDL_Renderer* renderer = scene->game->getRenderer();
 	Matrix4 projectionMatrix = scene->getProjectionMatrix();
 

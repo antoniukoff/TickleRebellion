@@ -39,42 +39,6 @@ bool GameManager::OnCreate() {
     // select scene for specific assignment
 
     currentScene = new Scene1(windowPtr->GetSDL_Window(), this);
-    
-    // create player
-    float mass = 1.0f;
-    float radius = 0.5f;
-    float orientation = 0.0f;
-    float rotation = 0.0f;
-    float angular = 0.0f;
-    // These are not very good defaults, but they will prevent compiler warnings.
-    float maxSpeed = 5.0f;
-    float maxAcceleration = 10.0f;
-    float maxRotation = 1.0f;
-    float maxAngular = 1.0f;
-    Vec3 position(0.5f * currentScene->getxAxis(), 0.5f * currentScene->getyAxis(), 0.0f);
-    Vec3 velocity(0.0f, 0.0f, 0.0f);
-    Vec3 acceleration(0.0f, 0.0f, 0.0f);
-
-    player = new PlayerBody
-    (
-        position,
-        velocity,
-        acceleration,
-        mass,
-        radius,
-        orientation,
-        rotation,
-        angular,
-        maxSpeed,
-        maxAcceleration,
-        maxRotation,
-        maxAngular,
-        this
-    );
-    if ( player->OnCreate() == false ) {
-        OnDestroy();
-        return false;
-    }
 
     // need to create Player before validating scene
     if (!ValidateCurrentScene()) {

@@ -159,7 +159,7 @@ void PlayerBody::Update( float deltaTime )
 
     // This will ensure player body stops at edges
     float height, width;
-    height = game->getSceneHeight();
+    height = game->getEndBoundary();
     width = game->getSceneWidth();
     
     if (pos.x < radius)

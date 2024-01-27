@@ -1,8 +1,10 @@
 #include "Alien.h"
 #include "Scene.h"
+#include "KinematicArrive.h"
+#include "SpriteSheet.h"
 
 Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
-	: destRect({ 0,0,0,0 }), srcRect({ 0,0,0,0 }), body(nullptr), texture(nullptr), scene(scene_)
+	: body(nullptr), scene(scene_)
 {
 	scale = 1.0f;
 
@@ -32,16 +34,111 @@ Alien::~Alien()
 }
 
 
-void Alien::Update(float deltaTime)
+void Alien::Update(float deltaTime, Body* target)
 {
+	// create a new overall steering output
+	KinematicSteeringOutput* steering = nullptr;
+	SteerToArrive(steering, target);
+	body->Update(deltaTime, steering);
+
+	delete steering;
 }
 
-void Alien::Render(SDL_Renderer* renderer)
+void Alien::Render()
 {
+	scale = ((scene->getWindowHeight() / 4.0f) - (body->getPos().y * scene->getyAxis())) / (scene->getWindowHeight() / 4.0f) * 0.1f;
+
+	SDL_Rect sourceRect;
+
+	SDL_Renderer* renderer = scene->game->getRenderer();
+	Matrix4 projectionMatrix = scene->getProjectionMatrix();
+
+	SDL_Rect square;
+	Vec3 screenCoords;
+	int    w, h;
+
+	// notice use of "body" in the following
+	SDL_QueryTexture(body->getTexture(), nullptr, nullptr, &w, &h);
+	w = static_cast<int>(w * scale);
+	h = static_cast<int>(h * scale);
+	screenCoords = projectionMatrix * body->getPos();
+	square.y = static_cast<int>(screenCoords.y - 0.5 * h);
+	square.x = static_cast<int>(screenCoords.x - 0.5 * w);
+	square.w = w;
+	square.h = h;
+
+	// Convert character orientation from radians to degrees.
+
+	int numFrames = 0;
+	int FRAME_SPEED = 100;
+
+	SpriteSheet::QuerySpriteSheet(8, 3, body->getTexture());
+
+	if (body->getVel().x > 0.2f && abs(body->getVel().x) > abs(body->getVel().y)) {
+		direction = Movement::RIGHT;
+	}
+	else if (body->getVel().x < -0.2f && abs(body->getVel().x) > abs(body->getVel().y)) {
+		direction = Movement::LEFT;
+	}
+	else if (body->getVel().y > 0.2f && abs(body->getVel().y) > abs(body->getVel().x)) {
+		direction = Movement::FORWARD;
+	}
+	else if (body->getVel().y < -0.2f && abs(body->getVel().y) > abs(body->getVel().x)) {
+		direction = Movement::BACKWARD;
+	}
+	else {
+		direction = Movement::IDLE;
+	}
+	int startPosX = 0;
+	int tileIndexY = 0;
+	int tileIndexX = 0;
+
+	SpriteSheet::QuerySpriteSheet(6, 6, body->getTexture());
+	switch (direction) {
+	case Movement::RIGHT:
+		numFrames = 2;
+		startPosX = 0;
+		tileIndexY = 4;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+
+	case Movement::LEFT:
+		numFrames = 2;
+		startPosX = 0;
+		tileIndexY = 4;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+
+	case Movement::BACKWARD:
+		numFrames = 2;
+		startPosX = 0;
+		tileIndexY = 4;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+
+	case Movement::FORWARD:
+		numFrames = 2;
+		startPosX = 0;
+		tileIndexY = 4;
+		tileIndexX = startPosX + ((SDL_GetTicks() / FRAME_SPEED) % numFrames);
+		sourceRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		break;
+	case Movement::IDLE:
+
+		sourceRect = SpriteSheet::GetUVTile(1, 3);
+		break;
+	}
+	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, square, 1.0f, true);
 }
 
-void Alien::SteerToArrive(Vec3 target)
+void Alien::SteerToArrive(KinematicSteeringOutput*& steering, Body* target)
 {
+	KinematicArrive* steering_algorithm = new KinematicArrive(body, target);
+	steering = steering_algorithm->getSteering();
+	delete steering_algorithm;
 }
 
 bool Alien::setTextureWith(std::string file)
