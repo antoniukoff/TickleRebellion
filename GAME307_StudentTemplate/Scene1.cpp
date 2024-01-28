@@ -52,13 +52,19 @@ bool Scene1::OnCreate() {
 
 	spaceship = new Spaceship(renderer, "NAVE.png");
 
-	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f);
+	audioEngine.init();
+	Music music = audioEngine.loadMusic("OutThere.ogg");
+	SoundEffect tickEffect = audioEngine.loadSoundEffect("witch_cackle-1.ogg");
+	music.play(-1);
+
+	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f, audioEngine.loadSoundEffect("powerup_02.wav"));
+
 
 	return true;
 }
 
 void Scene1::OnDestroy() {
-	
+	audioEngine.destroy();	
 }
 
 void Scene1::Update(const float deltaTime) {
@@ -70,15 +76,40 @@ void Scene1::Update(const float deltaTime) {
 		aliens[i]->Update(deltaTime, myCharacter->getBody(), aliens, 3.0f, i);
 	}
 	
-	for (int i = 0; i < bullets.size();i++)
+	// First loop
+	for (int i = 0; i < bullets.size();)
 	{
-		Vec3 yCaps = getProjectionMatrix() * Vec3{0.0f, this->yCap, 0.0f};
+		Vec3 yCaps = getProjectionMatrix() * Vec3 { 0.0f, this->yCap, 0.0f };
 
-		if (bullets[i].update(deltaTime, yCaps.y + 10.0f)) {
-			bullets.erase(bullets.begin() + i);
+		if (bullets[i].update(deltaTime, yCaps.y + 50.0f)) {
+			bullets[i] = bullets.back();
+			bullets.pop_back();
+		}
+		else {
+			i++;
 		}
 	}
 
+	// Second loop
+	for (int i = 0; i < bullets.size();)
+	{
+		bool bulletRemoved = false;
+		for (int j = 0; j < aliens.size() && !bulletRemoved; j++) {
+			if (bullets[i].collideWithAgent(aliens[j], this))
+			{
+				SoundEffect tickEffect = audioEngine.loadSoundEffect("witch_cackle-1.ogg");
+				tickEffect.play();
+				bullets.erase(bullets.begin() + i);
+				aliens.erase(aliens.begin() + j);
+				bulletRemoved = true;
+			}
+		}
+		if (!bulletRemoved) {
+			i++;
+		}
+	}
+
+	
 	spaceship->update();
 
 	
@@ -99,6 +130,7 @@ void Scene1::Render() {
 	}
 	// render the player
 	spaceship->render();
+
 
 	for (auto& bullet : bullets)
 	{

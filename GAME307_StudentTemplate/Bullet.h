@@ -13,14 +13,13 @@ public:
 
 	//when update returns true, delete bullet
 	bool update(float deltaTime, float yDistance);
-	void setTexture(SDL_Renderer* renderer, std::string filename);
 	void draw(SDL_Renderer* renderer, Scene* scene);
-	bool collideWithAgent(Alien* agent);
+	bool collideWithAgent(Alien* alien, Scene* scene);
 	bool collideWithLevel(float yDistance);
 	float getDamage() { return m_damage; }
 	MATH::Vec3 getPosition() const { return m_position; }
 private:
-	
+	SDL_Rect m_rect;
 	float m_damage;
 	MATH::Vec3 m_position;
 	MATH::Vec3 m_direction;

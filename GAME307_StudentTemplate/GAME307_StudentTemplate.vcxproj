@@ -82,7 +82,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)GameDev\SDL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)GameDev\SDL\dll\*.dll" "$(OutDir)"</Command>
@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Alien.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PlayerBody.cpp" />
+    <ClCompile Include="ResourseManager.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Seek.cpp" />
     <ClCompile Include="Spaceship.cpp" />
@@ -160,11 +162,13 @@
     <ClCompile Include="SteeringBehaviour.cpp" />
     <ClCompile Include="Steering\KinematicBody.cpp" />
     <ClCompile Include="Steering\SteeringOutput.cpp" />
+    <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alien.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Character.h" />
@@ -180,6 +184,7 @@
     <ClInclude Include="MemoryMonitor.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PlayerBody.h" />
+    <ClInclude Include="ResourseManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Seek.h" />
@@ -189,6 +194,7 @@
     <ClInclude Include="SteeringBehaviour.h" />
     <ClInclude Include="Steering\KinematicBody.h" />
     <ClInclude Include="Steering\SteeringOutput.h" />
+    <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

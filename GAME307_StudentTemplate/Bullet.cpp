@@ -2,6 +2,8 @@
 #include "Level.h"
 #include "Alien.h"
 #include "Scene.h"
+#include "SpriteSheet.h"
+#include "ResourseManager.h"
 
 Bullet::Bullet(MATH::Vec3 position, MATH::Vec3 direction, float damage, float speed)
 {
@@ -23,21 +25,6 @@ bool Bullet::update(float deltaTime, float yDistance)
 	return collideWithLevel(yDistance);
 }
 
-void Bullet::setTexture(SDL_Renderer* renderer, std::string filename)
-{
-	SDL_Surface* surface = IMG_Load(filename.c_str());
-	if (surface == nullptr) {
-		std::cout << "Error: " << SDL_GetError() << std::endl;
-	}
-	else {
-		m_texture = SDL_CreateTextureFromSurface(renderer, surface);
-		if (m_texture == nullptr) {
-			std::cout << "Error: " << SDL_GetError() << std::endl;
-		}
-	}
-	SDL_FreeSurface(surface);
-}
-
 void Bullet::draw(SDL_Renderer* renderer, Scene* scene)
 {
 
@@ -48,20 +35,20 @@ void Bullet::draw(SDL_Renderer* renderer, Scene* scene)
 
 
 	if (!m_texture) {
-		setTexture(renderer, "Bullet.png");
+		m_texture = ResourceManager::getTexture("hands.png", renderer);
 	}
 
-	SDL_Rect rect = { m_position.x + 5.0f, m_position.y + 5.0f, 15.0f * scale, 15.0f * scale };
-
-	SDL_RenderCopyEx(renderer, m_texture, nullptr, &rect, 0.0f, nullptr, SDL_FLIP_NONE);
+	SDL_Rect rect = { m_position.x - 30.0f, m_position.y - 50.0f , 100.0f * scale, 100.0f * scale };
+	m_rect = rect;
+	SDL_RenderCopy(renderer, m_texture, nullptr, &rect);
 }
 
-bool Bullet::collideWithAgent(Alien* alien)
+bool Bullet::collideWithAgent(Alien* alien, Scene* scene)
 {
-	const float MIN_DISTANCE = alien->getBody()->getRadius() + 5.0f;
+	const float MIN_DISTANCE = alien->getRadius() + m_rect.w / 2.0f;
 
 	MATH::Vec3 centerPosA = m_position;
-	MATH::Vec3 centerPosB = alien->getBody()->getPos() + MATH::Vec3(alien->getBody()->getRadius(), alien->getBody()->getRadius(), 0);
+	MATH::Vec3 centerPosB = scene->getProjectionMatrix() * alien->getBody()->getPos();	
 	MATH::Vec3 distVec = centerPosA - centerPosB;
 
 	float distance = MATH::VMath::mag(distVec);

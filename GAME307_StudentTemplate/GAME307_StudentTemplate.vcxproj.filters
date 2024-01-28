@@ -75,6 +75,9 @@
     </ClCompile>
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="ResourseManager.cpp" />
+    <ClCompile Include="TextureCache.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="ResourseManager.h" />
+    <ClInclude Include="TextureCache.h" />
+    <ClInclude Include="AudioManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

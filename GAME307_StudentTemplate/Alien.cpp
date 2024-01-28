@@ -4,11 +4,15 @@
 #include "KinematicSeperation.h"
 #include "SpriteSheet.h"
 #include <vector>
+#include <random>
 
 Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 	: body(nullptr), scene(scene_)
 {
 	scale = 1.0f;
+
+	std::mt19937 rng = std::mt19937(std::random_device()());
+	std::uniform_real_distribution<float> dist(1.0f, 7.0f);
 
 	if (!body)
 	{
@@ -16,7 +20,7 @@ Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 		float orientation = 0.0f;
 		float rotation = 0.0f;
 		float angular = 0.0f;
-		float maxSpeed = 0.5f;
+		float maxSpeed = dist(rng);
 		float maxAcceleration = 10.0f;
 		float maxRotation = 2.0f;
 		float maxAngular = 10.0f;
@@ -134,8 +138,7 @@ void Alien::Render()
 		sourceRect = SpriteSheet::GetUVTile(1, 3);
 		break;
 	}
-	destRect = square;
-	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, destRect, 1.0f, true);
+	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, square, 1.0f, true);
 }
 
 void Alien::SteerToArrive(KinematicSteeringOutput*& steering, Body* target, std::vector<Alien*> aliens, float threshhold, int index)

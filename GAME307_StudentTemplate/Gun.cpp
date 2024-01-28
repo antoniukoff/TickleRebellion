@@ -7,7 +7,7 @@ const float DEG_TO_RAD = 3.14159265359f / 180.0f;
 const float RAD_TO_DEG = 180.0f / 3.14159265359f;
 
 Gun::Gun(std::string name, int firerate, int bulletspershot,
-	float spread, float bulletDamage, float bulletSpeed)
+	float spread, float bulletDamage, float bulletSpeed, SoundEffect fireEffect) : _sound(fireEffect)
 {
 	_name = name;
 	_fireRate = firerate;
@@ -34,6 +34,8 @@ void Gun::update(bool isMouseDown, const MATH::Vec3& position, const MATH::Vec3&
 void Gun::fire(MATH::Vec3 direction, const MATH::Vec3& position, std::vector<Bullet>& bullets)
 {
 	static std::mt19937 randoEngine(time(nullptr));
+
+	_sound.play();
 
 	std::uniform_real_distribution<float> randRotate(-_spread, _spread);
 

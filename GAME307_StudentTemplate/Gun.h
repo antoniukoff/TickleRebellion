@@ -3,6 +3,7 @@
 #include <vector>
 #include "Bullet.h"
 #include "Vector.h"
+#include "AudioManager.h"
 
 class Gun
 {
@@ -12,7 +13,9 @@ public:
 		int bulletspershot,
 		float spread,
 		float _bulletDamage,
-		float bulleSpeed);
+		float bulleSpeed,
+		SoundEffect sound);
+
 	~Gun();
 	MATH::Vec3 rotate(const MATH::Vec3& vector, float angle);
 	void update(bool isMouseDown,
@@ -33,5 +36,6 @@ private:
 	float _bulletSpeed;
 	float _bulletDamage;
 	float _frameCounter;
+	SoundEffect _sound;
 };
 

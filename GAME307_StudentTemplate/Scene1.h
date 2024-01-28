@@ -10,6 +10,7 @@
 #include "StaticBody.h"
 #include "Level.h"
 #include "Gun.h"
+#include "AudioManager.h"
 
 using namespace MATH;
 class Scene1 : public Scene {
@@ -29,12 +30,12 @@ private:
 	Gun* gun;
 	std::vector<Bullet> bullets;
 	bool isShooting = false;
-
+	AudioEngine audioEngine;
 
 	static std::mt19937 mt;
 	static std::uniform_real_distribution<float> distX;
 	static std::uniform_real_distribution<float> distY;
-	float timeToAdd = 200.0f, frameTime = 0.0f;
+	float timeToAdd = 50.0f, frameTime = 0.0f;
 
 public:
 	Scene1(SDL_Window* sdlWindow, GameManager* game_);
