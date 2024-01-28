@@ -5,6 +5,7 @@
 #include "SpriteSheet.h"
 #include <vector>
 #include <random>
+#include "ResourseManager.h"
 
 Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 	: body(nullptr), scene(scene_)
@@ -176,19 +177,7 @@ void Alien::SteerToArrive(KinematicSteeringOutput*& steering, Body* target, std:
 
 bool Alien::setTextureWith(std::string file)
 {
-	SDL_Surface* image = IMG_Load(file.c_str());
-	if (image == nullptr) {
-		throw std::runtime_error("Incorrect filepath");
-		return false;
-	}
-	SDL_Window* window = scene->getWindow();
-	SDL_Renderer* renderer = SDL_GetRenderer(window);
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-	if (!texture)
-	{
-		throw std::runtime_error("Failed to create texture");
-		return false;
-	}
+	SDL_Texture* texture = ResourceManager::getTexture(file, scene->game->getRenderer());
 	body->setTexture(texture);
 	return true;
 }

@@ -28,5 +28,6 @@ private:
 	Scene* scene;
 	Movement direction = Movement::IDLE;
 	SDL_Rect destRect;
+	SDL_Texture* texture;
 };
 

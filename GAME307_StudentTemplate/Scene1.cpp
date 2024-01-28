@@ -2,6 +2,7 @@
 #include "KinematicSeek.h"
 #include <algorithm>
 
+
 std::mt19937 Scene1::mt = std::mt19937(std::random_device()());
 std::uniform_real_distribution<float> Scene1::distX = std::uniform_real_distribution<float>();
 std::uniform_real_distribution<float> Scene1::distY = std::uniform_real_distribution<float>();
@@ -59,6 +60,7 @@ bool Scene1::OnCreate() {
 
 	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f, audioEngine.loadSoundEffect("powerup_02.wav"));
 
+	currentWave = 0;
 
 	return true;
 }
@@ -72,8 +74,9 @@ void Scene1::Update(const float deltaTime) {
 
 	myCharacter->Update(deltaTime);
 
-	for (int i = 0; i < aliens.size(); i++) {
-		aliens[i]->Update(deltaTime, myCharacter->getBody(), aliens, 3.0f, i);
+	for (int i = 0; i < aliens[currentWave].size(); i++)
+	{
+		aliens[currentWave][i]->Update(deltaTime, myCharacter->getBody(), aliens[currentWave], 3.0f, i);
 	}
 	
 	// First loop
@@ -94,13 +97,13 @@ void Scene1::Update(const float deltaTime) {
 	for (int i = 0; i < bullets.size();)
 	{
 		bool bulletRemoved = false;
-		for (int j = 0; j < aliens.size() && !bulletRemoved; j++) {
-			if (bullets[i].collideWithAgent(aliens[j], this))
+		for (int j = 0; j < aliens[currentWave].size() && !bulletRemoved; j++) {
+			if (bullets[i].collideWithAgent(aliens[currentWave][j], this))
 			{
 				SoundEffect tickEffect = audioEngine.loadSoundEffect("witch_cackle-1.ogg");
 				tickEffect.play();
 				bullets.erase(bullets.begin() + i);
-				aliens.erase(aliens.begin() + j);
+				aliens[currentWave].erase(aliens[currentWave].begin() + j);
 				bulletRemoved = true;
 			}
 		}
@@ -125,7 +128,7 @@ void Scene1::Render() {
 
 	level.drawTiles();
 	myCharacter->render();
-	for (auto& alien : aliens) {
+	for (auto& alien : aliens[currentWave]) {
 		alien->Render();
 	}
 	// render the player
@@ -172,15 +175,23 @@ void Scene1::HandleEvents(const SDL_Event& event)
 
 void Scene1::spawnAlien()
 {
+	static int totalCount = 0;
 	if (spaceship->getState() == State::STOP) {
-		if (frameTime >= timeToAdd) {
-			Vec3 position = { distX(mt), distY(mt), 0.0f };
-			Alien* alien = new Alien(position, this, "SHEET.PNG");
-
-			aliens.push_back(alien);
-			frameTime = 0.0f;
-		}
-		else
-			frameTime += distX(mt) * 0.05f;
+		for (int i = 0; i < Waves[currentWave]; i++)
+			if (frameTime >= timeToAdd) {
+				Vec3 position = { distX(mt), distY(mt), 0.0f };
+				Alien* alien = new Alien(position, this, "SHEET.PNG");
+				totalCount++;
+				aliens[currentWave].push_back(alien);
+				if (totalCount == Waves[currentWave])
+				{
+					currentWave++;
+					totalCount = 0;
+				}
+				frameTime = 0.0f;
+			}
+			else
+				frameTime += 0.05f;
 	}
 }
+		

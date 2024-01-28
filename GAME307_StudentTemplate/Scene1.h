@@ -11,6 +11,7 @@
 #include "Level.h"
 #include "Gun.h"
 #include "AudioManager.h"
+#include <array>
 
 using namespace MATH;
 class Scene1 : public Scene {
@@ -24,7 +25,7 @@ private:
 	Matrix4 projectionMatrix;
     Matrix4     inverseProjection;
 	Character* myCharacter;
-	std::vector<Alien*> aliens;	
+	std::array<std::vector<Alien*>, 3> aliens;	
 	Spaceship* spaceship;
 	Level level;
 	Gun* gun;
@@ -32,6 +33,9 @@ private:
 	bool isShooting = false;
 	AudioEngine audioEngine;
 
+
+	const int Waves[3] = { 30, 50, 70 };
+	int currentWave = 0;
 	static std::mt19937 mt;
 	static std::uniform_real_distribution<float> distX;
 	static std::uniform_real_distribution<float> distY;
