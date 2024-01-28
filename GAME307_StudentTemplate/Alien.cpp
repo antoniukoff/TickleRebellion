@@ -16,7 +16,7 @@ Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 		float orientation = 0.0f;
 		float rotation = 0.0f;
 		float angular = 0.0f;
-		float maxSpeed = 3.0f;
+		float maxSpeed = 0.5f;
 		float maxAcceleration = 10.0f;
 		float maxRotation = 2.0f;
 		float maxAngular = 10.0f;
@@ -134,7 +134,8 @@ void Alien::Render()
 		sourceRect = SpriteSheet::GetUVTile(1, 3);
 		break;
 	}
-	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, square, 1.0f, true);
+	destRect = square;
+	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, destRect, 1.0f, true);
 }
 
 void Alien::SteerToArrive(KinematicSteeringOutput*& steering, Body* target, std::vector<Alien*> aliens, float threshhold, int index)

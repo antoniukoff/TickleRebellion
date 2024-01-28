@@ -73,6 +73,8 @@
     <ClCompile Include="Spaceship.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -150,6 +152,8 @@
     <ClInclude Include="Spaceship.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Gun.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

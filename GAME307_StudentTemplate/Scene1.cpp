@@ -1,6 +1,6 @@
 #include "Scene1.h"
 #include "KinematicSeek.h"
-
+#include <algorithm>
 
 std::mt19937 Scene1::mt = std::mt19937(std::random_device()());
 std::uniform_real_distribution<float> Scene1::distX = std::uniform_real_distribution<float>();
@@ -49,13 +49,10 @@ bool Scene1::OnCreate() {
 
 	myCharacter = new Character();
 	myCharacter->OnCreate(this, "human_base.png", Vec3{ 10.0f, 0.0f, 0.0f });
-	
-
-	Vec3 position = { distX(mt), distY(mt), 0.0f };
-	Alien* alien = new Alien(position, this, "SHEET.PNG");
-	aliens.push_back(alien);
 
 	spaceship = new Spaceship(renderer, "NAVE.png");
+
+	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f);
 
 	return true;
 }
@@ -73,7 +70,18 @@ void Scene1::Update(const float deltaTime) {
 		aliens[i]->Update(deltaTime, myCharacter->getBody(), aliens, 3.0f, i);
 	}
 	
+	for (int i = 0; i < bullets.size();i++)
+	{
+		Vec3 yCaps = getProjectionMatrix() * Vec3{0.0f, this->yCap, 0.0f};
+
+		if (bullets[i].update(deltaTime, yCaps.y + 10.0f)) {
+			bullets.erase(bullets.begin() + i);
+		}
+	}
+
 	spaceship->update();
+
+	
 
 	spawnAlien();
 	// Update player
@@ -92,15 +100,42 @@ void Scene1::Render() {
 	// render the player
 	spaceship->render();
 
+	for (auto& bullet : bullets)
+	{
+		bullet.draw(renderer, this);
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
 void Scene1::HandleEvents(const SDL_Event& event)
 {
 	// send events to npc's as needed
-	level.levelHandleEvents(event);
+	//level.levelHandleEvents(event);
 	// send events to player as needed
-	myCharacter->HandleEvents(event);
+	myCharacter->HandleEvents(event);	
+	Vec3 mousePos{};
+
+	switch (event.type) {
+	case SDL_MOUSEBUTTONDOWN:
+		isShooting = true;
+		mousePos = { (float)event.button.x, (float)event.button.y, 0.0f };
+		break;
+	case SDL_MOUSEBUTTONUP:
+		isShooting = false;
+		break;
+	}
+
+	Vec3 bulletPos = getProjectionMatrix() * myCharacter->getBody()->getPos();
+	bulletPos.x -= 47.0f;
+	bulletPos.y -= 5.0f;
+
+	if (isShooting) {
+		Vec3 direction = MATH::VMath::normalize(mousePos - bulletPos);
+		gun->update(true, bulletPos + (direction * 70.0f), direction, bullets, 0.0f);
+		isShooting = false;
+	}
+
 }
 
 void Scene1::spawnAlien()

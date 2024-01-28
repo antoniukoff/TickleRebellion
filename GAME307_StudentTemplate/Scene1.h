@@ -9,6 +9,7 @@
 #include "Spaceship.h"
 #include "StaticBody.h"
 #include "Level.h"
+#include "Gun.h"
 
 using namespace MATH;
 class Scene1 : public Scene {
@@ -25,6 +26,10 @@ private:
 	std::vector<Alien*> aliens;	
 	Spaceship* spaceship;
 	Level level;
+	Gun* gun;
+	std::vector<Bullet> bullets;
+	bool isShooting = false;
+
 
 	static std::mt19937 mt;
 	static std::uniform_real_distribution<float> distX;

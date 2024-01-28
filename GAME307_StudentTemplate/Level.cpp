@@ -234,7 +234,7 @@ void Level::drawTiles()
                 m_tiles[i]->child->needsResizing);
         }
     }
-    drawTopTileOutline();
+    //drawTopTileOutline();
 }
 
 
