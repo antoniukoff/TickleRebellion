@@ -10,6 +10,7 @@ Scene1::Scene1(SDL_Window* sdlWindow_, GameManager* game_){
 	window = sdlWindow_;
     game = game_;
 	renderer = SDL_GetRenderer(window);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	xAxis = 25.0f;
 	yAxis = 15.0f;
 }
@@ -52,8 +53,9 @@ bool Scene1::OnCreate() {
 
 	Vec3 position = { distX(mt), distY(mt), 0.0f };
 	Alien* alien = new Alien(position, this, "SHEET.PNG");
-
 	aliens.push_back(alien);
+
+	spaceship = new Spaceship(renderer, "NAVE.png");
 
 	return true;
 }
@@ -70,7 +72,8 @@ void Scene1::Update(const float deltaTime) {
 	for (int i = 0; i < aliens.size(); i++) {
 		aliens[i]->Update(deltaTime, myCharacter->getBody(), aliens, 3.0f, i);
 	}
-
+	
+	spaceship->update();
 
 	spawnAlien();
 	// Update player
@@ -87,6 +90,7 @@ void Scene1::Render() {
 		alien->Render();
 	}
 	// render the player
+	spaceship->render();
 
 	SDL_RenderPresent(renderer);
 }
@@ -101,12 +105,15 @@ void Scene1::HandleEvents(const SDL_Event& event)
 
 void Scene1::spawnAlien()
 {
-	if (frameTime >= timeToAdd) {
-		Vec3 position = { distX(mt), distY(mt), 0.0f };
-		Alien* alien = new Alien(position, this, "SHEET.PNG");
+	if (spaceship->getState() == State::STOP) {
+		if (frameTime >= timeToAdd) {
+			Vec3 position = { distX(mt), distY(mt), 0.0f };
+			Alien* alien = new Alien(position, this, "SHEET.PNG");
 
-		aliens.push_back(alien);
-		frameTime = 0.0f;
-	} else
-		frameTime += distX(mt) * 0.1f;
+			aliens.push_back(alien);
+			frameTime = 0.0f;
+		}
+		else
+			frameTime += distX(mt) * 0.05f;
+	}
 }

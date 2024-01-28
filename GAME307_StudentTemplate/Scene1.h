@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "Character.h"
 #include "Alien.h"
+#include "Spaceship.h"
 #include "StaticBody.h"
 #include "Level.h"
 
@@ -22,6 +23,7 @@ private:
     Matrix4     inverseProjection;
 	Character* myCharacter;
 	std::vector<Alien*> aliens;	
+	Spaceship* spaceship;
 	Level level;
 
 	static std::mt19937 mt;

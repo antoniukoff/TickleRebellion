@@ -61,9 +61,18 @@
     <ClCompile Include="KinematicSeek.cpp">
       <Filter>Source\AI</Filter>
     </ClCompile>
-    <ClCompile Include="Alien.cpp" />
-    <ClCompile Include="KinematicArrive.cpp" />
-    <ClCompile Include="KinematicSeparation.cpp" />
+    <ClCompile Include="Alien.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="KinematicArrive.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="KinematicSeparation.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Spaceship.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -129,9 +138,18 @@
     <ClInclude Include="KinematicSeek.h">
       <Filter>Header\AI</Filter>
     </ClInclude>
-    <ClInclude Include="Alien.h" />
-    <ClInclude Include="KinematicArrive.h" />
-    <ClInclude Include="KinematicSeperation.h" />
+    <ClInclude Include="Alien.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="KinematicArrive.h">
+      <Filter>Header\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="KinematicSeperation.h">
+      <Filter>Header\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Spaceship.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

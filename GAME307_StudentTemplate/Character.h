@@ -10,7 +10,7 @@ using namespace std;
 
 class Turret;
 
-enum class Direction {
+static enum class Direction {
 	RIGHT,
 	LEFT,
 	FORWARD,
