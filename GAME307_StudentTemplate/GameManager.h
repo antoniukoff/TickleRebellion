@@ -38,6 +38,7 @@ public:
 	Matrix4 getProjectionMatrix();
     PlayerBody* getPlayer(){ return player; }
 	Uint32 getChangeScene() { return changeSceneEventType; }
+	void setLaunch(bool l) { launched = l; }
 
 	void setEndBoundary(float y) { yCap = y; }
 	float getEndBoundary() { return yCap; }

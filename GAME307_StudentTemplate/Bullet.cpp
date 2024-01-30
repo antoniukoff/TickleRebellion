@@ -25,6 +25,11 @@ bool Bullet::update(float deltaTime, float yDistance)
 	return collideWithLevel(yDistance);
 }
 
+void Bullet::updateSuperBullet(float deltaTime, float yDistance)
+{
+	m_position += m_direction * m_speed * deltaTime;
+}
+
 void Bullet::draw(SDL_Renderer* renderer, Scene* scene)
 {
 
@@ -39,6 +44,17 @@ void Bullet::draw(SDL_Renderer* renderer, Scene* scene)
 	}
 
 	SDL_Rect rect = { m_position.x - 30.0f, m_position.y - 50.0f , 100.0f * scale, 100.0f * scale };
+	m_rect = rect;
+	SDL_RenderCopy(renderer, m_texture, nullptr, &rect);
+}
+
+void Bullet::drawSuperBullet(SDL_Renderer* renderer, Scene* scene)
+{
+	if (!m_texture) {
+		m_texture = ResourceManager::getTexture("hands.png", renderer);
+	}
+
+	SDL_Rect rect = { m_position.x - 30.0f, m_position.y - 50.0f , 100.0f, 100.0f};
 	m_rect = rect;
 	SDL_RenderCopy(renderer, m_texture, nullptr, &rect);
 }

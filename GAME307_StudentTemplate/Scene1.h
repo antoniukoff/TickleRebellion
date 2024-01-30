@@ -31,11 +31,19 @@ private:
 	Gun* gun;
 	std::vector<Bullet> bullets;
 	bool isShooting = false;
+	bool stopSpawn = false;
+	bool pickedUpHands = false;
+	bool reset = false;
 	AudioEngine audioEngine;
+	Vec3 mousePos{};
+
+	SDL_Texture* bigHandTexture;
+	SDL_Rect bigHandRect;	
 
 
 	const int Waves[3] = { 30, 50, 70 };
 	int currentWave = 0;
+
 	static std::mt19937 mt;
 	static std::uniform_real_distribution<float> distX;
 	static std::uniform_real_distribution<float> distY;
@@ -49,6 +57,7 @@ public:
 	void Update(const float time);
 	void Render();
     void HandleEvents(const SDL_Event &event);
+	void updateBigHand(Vec3 mousePos);
 	float getxAxis() { return xAxis; }
 	float getyAxis() { return yAxis; }
 	SDL_Window* getWindow() { return window; }
@@ -57,6 +66,8 @@ public:
 	float getWindowWidth() { return w; }
 	float getWindowHeight() { return h; }
 	void spawnAlien();
+	bool hasPickedUpHands();
+	void spawnBigHands(Alien* alien);
 };
 
 #endif

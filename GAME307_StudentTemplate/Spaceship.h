@@ -8,7 +8,9 @@ enum class State
 {
 	MOVING,
 	STOP,
-	OFFSCREEN
+	OFFSCREEN,
+	DESTROYED,
+	REMOVE
 };
 class Spaceship
 {
@@ -21,6 +23,8 @@ public:
 	void update();
 	float lerp(float a, float b, float f);
 	State getState() { return direction; }
+	SDL_Rect getDims() { return  dims; }
+	void destroyShip();
 private:
 	MATH::Vec3 position = {- 100.0f, 0.0f, 0.0f};
 	MATH::Vec3 velocity = {5.0f, 0.0f,0.0f};
@@ -30,9 +34,12 @@ private:
 	float velocityModifier = 0;
 	SDL_Texture* texture;
 	SDL_Texture* beamTexture;
+	SDL_Texture* destroyTexture;
 
 	bool toggleSide = false;
 
+	SDL_Rect dims = { 0,0,0,0 };
+	SDL_Rect destroyRect = { 0,0,0,0 };
 	State direction = State::MOVING;
 	SDL_Renderer* renderer;
 	int stopTimer = 0;

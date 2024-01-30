@@ -109,7 +109,6 @@ void Character::render()
 	SDL_Renderer* renderer = scene->game->getRenderer();
 	Matrix4 projectionMatrix = scene->getProjectionMatrix();
 
-	SDL_Rect square;
 	Vec3 screenCoords;
 	int    w, h;
 
@@ -118,10 +117,10 @@ void Character::render()
 	w = static_cast<int>(w * scale);
 	h = static_cast<int>(h * scale);
 	screenCoords = projectionMatrix * body->getPos();
-	square.y = static_cast<int>(screenCoords.y - 0.5 * h);
-	square.x = static_cast<int>(screenCoords.x - 0.5 * w);
-	square.w = w;
-	square.h = h;
+	destRect.y = static_cast<int>(screenCoords.y - 0.5 * h);
+	destRect.x = static_cast<int>(screenCoords.x - 0.5 * w);
+	destRect.w = w;
+	destRect.h = h;
 
 	// Convert character orientation from radians to degrees.
 
@@ -187,7 +186,7 @@ void Character::render()
 		sourceRect = SpriteSheet::GetUVTile(1, 3);
 		break;
 	}
-	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, square, 1.0f, true);
+	SpriteSheet::drawPlayer(renderer, body->getTexture(), sourceRect, destRect, 1.0f, true);
 }
 
 void Character::HandleEvents(const SDL_Event& event)

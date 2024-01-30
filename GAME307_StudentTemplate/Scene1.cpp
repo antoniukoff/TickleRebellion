@@ -1,6 +1,7 @@
 #include "Scene1.h"
 #include "KinematicSeek.h"
 #include <algorithm>
+#include "ResourseManager.h"
 
 
 std::mt19937 Scene1::mt = std::mt19937(std::random_device()());
@@ -55,7 +56,7 @@ bool Scene1::OnCreate() {
 
 	audioEngine.init();
 	Music music = audioEngine.loadMusic("OutThere.ogg");
-	SoundEffect tickEffect = audioEngine.loadSoundEffect("witch_cackle-1.ogg");
+
 	music.play(-1);
 
 	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f, audioEngine.loadSoundEffect("powerup_02.wav"));
@@ -78,18 +79,76 @@ void Scene1::Update(const float deltaTime) {
 	{
 		aliens[currentWave][i]->Update(deltaTime, myCharacter->getBody(), aliens[currentWave], 3.0f, i);
 	}
+
+	spaceship->update();
+
+	if (!stopSpawn)
+	{
+		spawnAlien();
+	}
+	else {
+		hasPickedUpHands();
+	}
 	
+	Vec3 bulletPos = getProjectionMatrix() * myCharacter->getBody()->getPos();
+	bulletPos.x -= 47.0f;
+	bulletPos.y -= 5.0f;
+
+	if (isShooting) {
+		Vec3 direction = MATH::VMath::normalize(mousePos - bulletPos);
+		if (!pickedUpHands) {
+			gun->update(true, bulletPos + (direction * 70.0f), direction, bullets, 0.0f);
+			isShooting = false;
+		}
+		else
+		{
+			bigHandTexture = nullptr;
+			gun->update(true, bulletPos + (direction * 70.0f), direction, bullets, 0.0f);
+			isShooting = false;
+		}
+	}
+
 	// First loop
 	for (int i = 0; i < bullets.size();)
 	{
 		Vec3 yCaps = getProjectionMatrix() * Vec3 { 0.0f, this->yCap, 0.0f };
-
-		if (bullets[i].update(deltaTime, yCaps.y + 50.0f)) {
-			bullets[i] = bullets.back();
-			bullets.pop_back();
+		if (!pickedUpHands) {
+			if (bullets[i].update(deltaTime, yCaps.y + 50.0f)) {
+				bullets[i] = bullets.back();
+				bullets.pop_back();
+			}
+			else {
+				i++;
+			}
 		}
 		else {
-			i++;
+			
+			bullets[i].updateSuperBullet(deltaTime, yCaps.y + 50.0f);
+
+			int shipRadius = spaceship->getDims().w / 2;
+			int bulletRadius = bullets[i].getRect().w / 2;
+			Vec3 spaceshipPos = { (float)spaceship->getDims().x, (float)spaceship->getDims().y, 0.0f};
+			Vec3 bulletPos = { (float)bullets[i].getRect().x, (float)bullets[i].getRect().y, 0.0f };
+			int distance = VMath::distance(spaceshipPos, bulletPos);
+			if (distance < shipRadius + bulletRadius) {
+				spaceship->destroyShip();
+				SoundEffect explosion = audioEngine.loadSoundEffect("explosion1.ogg");
+				explosion.play();
+				bullets[i] = bullets.back();
+				bullets.pop_back();
+			}
+			else if(bullets[i].getRect().y < 0){
+				bullets[i] = bullets.back();
+				bullets.pop_back();
+				currentWave = 0;
+				pickedUpHands = false;
+				stopSpawn = false;
+				reset = true;
+				i++;
+			}
+			else {
+				i++;
+			}
 		}
 	}
 
@@ -103,6 +162,12 @@ void Scene1::Update(const float deltaTime) {
 				SoundEffect tickEffect = audioEngine.loadSoundEffect("witch_cackle-1.ogg");
 				tickEffect.play();
 				bullets.erase(bullets.begin() + i);
+				if (currentWave == 2  && aliens[currentWave].size() == 1) {
+					if (!bigHandTexture) {
+						spawnBigHands(aliens[currentWave].back());
+						stopSpawn = true;
+					}
+				}
 				aliens[currentWave].erase(aliens[currentWave].begin() + j);
 				bulletRemoved = true;
 			}
@@ -112,13 +177,14 @@ void Scene1::Update(const float deltaTime) {
 		}
 	}
 
-	
-	spaceship->update();
+	if (spaceship->getState() == State::REMOVE)
+	{
+		delete spaceship;
+		spaceship = nullptr;
+		game->setLaunch(false);
+	}
 
 	
-
-	spawnAlien();
-	// Update player
 }
 
 void Scene1::Render() {
@@ -127,18 +193,47 @@ void Scene1::Render() {
 
 
 	level.drawTiles();
+	if (bigHandTexture)
+	{
+		if (pickedUpHands)
+		{
+			SDL_Rect rect;
+			bigHandRect.x = myCharacter->getDestRect().x;
+			bigHandRect.y = myCharacter->getDestRect().y;
+			rect.x = myCharacter->getDestRect().x - bigHandRect.w / 2 + (myCharacter->getDestRect().w / 4);
+			rect.y = myCharacter->getDestRect().y - (myCharacter->getDestRect().h /myCharacter->getScale()  / 2);
+			rect.w = bigHandRect.w;
+			rect.h = bigHandRect.h;
+			SDL_RenderCopy(renderer, bigHandTexture, NULL, &rect);
+		}
+		else {
+
+			SDL_RenderCopy(renderer, bigHandTexture, NULL, &bigHandRect);
+		}
+	}
+
 	myCharacter->render();
 	for (auto& alien : aliens[currentWave]) {
 		alien->Render();
 	}
 	// render the player
+	if(spaceship)
 	spaceship->render();
 
 
 	for (auto& bullet : bullets)
 	{
+		if (!pickedUpHands)
+		{
 		bullet.draw(renderer, this);
+		} 
+		else
+		{
+			bullet.drawSuperBullet(renderer, this);
+		}
 	}
+
+	
 
 	SDL_RenderPresent(renderer);
 }
@@ -149,7 +244,7 @@ void Scene1::HandleEvents(const SDL_Event& event)
 	//level.levelHandleEvents(event);
 	// send events to player as needed
 	myCharacter->HandleEvents(event);	
-	Vec3 mousePos{};
+	
 
 	switch (event.type) {
 	case SDL_MOUSEBUTTONDOWN:
@@ -161,37 +256,67 @@ void Scene1::HandleEvents(const SDL_Event& event)
 		break;
 	}
 
-	Vec3 bulletPos = getProjectionMatrix() * myCharacter->getBody()->getPos();
-	bulletPos.x -= 47.0f;
-	bulletPos.y -= 5.0f;
+}
 
-	if (isShooting) {
-		Vec3 direction = MATH::VMath::normalize(mousePos - bulletPos);
-		gun->update(true, bulletPos + (direction * 70.0f), direction, bullets, 0.0f);
-		isShooting = false;
-	}
-
+void Scene1::updateBigHand(Vec3 mousePos) {
+	static Vec3 bigHandPos = getProjectionMatrix() * myCharacter->getBody()->getPos();
+	bigHandPos.x -= 47.0f;
+	bigHandPos.y -= 5.0f;
+	Vec3 direction = MATH::VMath::normalize(mousePos - bigHandPos);
+	bigHandRect.x = bigHandPos.x + (direction.x * 70.0f);
+	bigHandRect.y = bigHandPos.y + (direction.y * 70.0f);
+	isShooting = false;
 }
 
 void Scene1::spawnAlien()
 {
 	static int totalCount = 0;
+	if (reset) {
+		totalCount = 0;
+		reset = false;
+	}
 	if (spaceship->getState() == State::STOP) {
-		for (int i = 0; i < Waves[currentWave]; i++)
-			if (frameTime >= timeToAdd) {
+	
+		if (frameTime >= timeToAdd) {
+			if (totalCount < Waves[currentWave])
+			{
 				Vec3 position = { distX(mt), distY(mt), 0.0f };
 				Alien* alien = new Alien(position, this, "SHEET.PNG");
-				totalCount++;
 				aliens[currentWave].push_back(alien);
-				if (totalCount == Waves[currentWave])
-				{
-					currentWave++;
-					totalCount = 0;
-				}
-				frameTime = 0.0f;
+				totalCount++;
 			}
-			else
-				frameTime += 0.05f;
+
+			if (totalCount == Waves[currentWave] && aliens[currentWave].size() == 0)
+			{
+				if (currentWave < 2) {
+					currentWave++;
+				}
+				totalCount = 0;
+			}
+			frameTime = 0.0f;
+		}
+		else
+			frameTime += 1.5f * (currentWave + 1);
 	}
+}
+
+bool Scene1::hasPickedUpHands() {
+	int playerRadius =  myCharacter->getDestRect().w / 2;
+	int bigHandsRadius =  bigHandRect.w / 2;
+	Vec3 bigHandPos = { (float)bigHandRect.x, (float)bigHandRect.y, 0.0f };
+	int distance = VMath::distance((getProjectionMatrix() * myCharacter->getBody()->getPos()), bigHandPos);
+	if (distance < playerRadius + bigHandsRadius) {
+		pickedUpHands = true;
+		return true;
+	}
+	return false;
+}
+
+void Scene1::spawnBigHands(Alien* alien) 
+{
+	bigHandTexture = ResourceManager::getTexture("hands.png", renderer);
+	int w, h;
+	SDL_QueryTexture(bigHandTexture, NULL, NULL, &w, &h);
+	bigHandRect = { (int)(getProjectionMatrix() * alien->getBody()->getPos()).x - (w / 4) / 2, (int)(getProjectionMatrix() * alien->getBody()->getPos()).y - (h / 4) / 2, w / 4 , h / 4 };
 }
 		

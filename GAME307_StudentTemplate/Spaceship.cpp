@@ -1,5 +1,6 @@
 #include "Spaceship.h"
 #include "SpriteSheet.h"
+#include "ResourseManager.h"
 Spaceship::Spaceship(SDL_Renderer* renderer, const char* path)
 	: renderer(renderer)
 {
@@ -9,6 +10,9 @@ Spaceship::Spaceship(SDL_Renderer* renderer, const char* path)
 
 Spaceship::~Spaceship()
 {
+	SDL_DestroyTexture(texture);
+	SDL_DestroyTexture(beamTexture);
+	SDL_DestroyTexture(destroyTexture);
 }
 
 void Spaceship::loadTexture(const char* path, SDL_Renderer* renderer)
@@ -48,6 +52,8 @@ void Spaceship::render()
 	float scale = 0.5f;
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 	SDL_Rect rect = { position.x,  position.y, w * scale, h * scale };
+	dims = rect;
+	SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 	if (direction == State::STOP)
 	{
 		SDL_QueryTexture(texture, NULL, NULL, &w2, &h2);
@@ -59,14 +65,48 @@ void Spaceship::render()
 		SDL_SetTextureAlphaMod(beamTexture, static_cast<Uint8>(alpha));
 		SDL_RenderCopyEx(renderer, beamTexture, NULL, &beamRect, 0, NULL, SDL_FLIP_NONE);
 	}
-	SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+	else if (direction == State::DESTROYED)
+	{
+		if (!destroyTexture) {
+			destroyTexture = ResourceManager::getTexture("ExplosionSetPRE2.png", renderer);
+		}
+		SpriteSheet::QuerySpriteSheet(6, 1, destroyTexture);
+		int numFrames = 6;
+		int startPosX = 0;
+		int tileIndexY = 0;
+		int tileIndexX = startPosX + ((SDL_GetTicks() / 150) % numFrames);
+		destroyRect = SpriteSheet::GetUVTile(tileIndexX, tileIndexY);
+		SDL_FRect rect = {
+			position.x + 50.0f, position.y, destroyRect.w * scale * 10.0f, destroyRect.h * scale * 10.0f
+		};
+		SDL_RenderCopyExF(renderer, destroyTexture, &destroyRect, &rect, 0, NULL, SDL_FLIP_NONE);
+		 rect = {
+			position.x + 50.0f, position.y+50.0f, destroyRect.w * scale * 10.0f, destroyRect.h * scale * 10.0f
+		};
+		SDL_RenderCopyExF(renderer, destroyTexture, &destroyRect, &rect, 0, NULL, SDL_FLIP_NONE);
+		 rect = {
+			position.x -50.0f, position.y, destroyRect.w * scale * 10.0f, destroyRect.h * scale * 10.0f
+		};
+		SDL_RenderCopyExF(renderer, destroyTexture, &destroyRect, &rect, 0, NULL, SDL_FLIP_NONE);
+		 rect = {
+			position.x + 50.0f, position.y-50.0f, destroyRect.w * scale * 10.0f, destroyRect.h * scale * 10.0f
+		};
+		SDL_RenderCopyExF(renderer, destroyTexture, &destroyRect, &rect, 0, NULL, SDL_FLIP_NONE);
+		static int alpha = 255;
+		SDL_SetTextureAlphaMod(texture, alpha -= 4);
+		if(alpha <= 0)
+			direction = State::REMOVE;
+	}
+	
 	
 }
 
 void Spaceship::update()
 {
 	
-
+	if (direction == State::DESTROYED || direction == State::REMOVE) {
+		return;
+	}
 	if (direction == State::OFFSCREEN) {
 		stopTimer++;
 		velocity.x = 0.0f;
@@ -127,4 +167,9 @@ void Spaceship::update()
 float Spaceship::lerp(float a, float b, float f)
 {
 	return a * (1.0 - f) + (b * f);
-}	
+}
+
+void Spaceship::destroyShip()
+{
+	direction = State::DESTROYED;
+}

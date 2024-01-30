@@ -23,6 +23,7 @@ private:
 	class PlayerBody* body;
 	class Scene* scene;
 	SDL_Rect sourceRect;
+	SDL_Rect destRect;
 	Direction direction = Direction::IDLE;
 	float scale = 1.0f;
 
@@ -53,6 +54,12 @@ public:
 	bool isDead() { return (curHP <= 0) ? true : false; }
 	void RenderUI();
 	Body* getBody() { return body; }
+	SDL_Rect getDestRect() const {
+		return destRect;
+	}
+	float getScale() const {
+		return scale;
+	}
 };
 
 #endif
