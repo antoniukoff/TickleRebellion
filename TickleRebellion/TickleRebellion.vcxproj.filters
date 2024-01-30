@@ -22,9 +22,6 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source\Movement</Filter>
     </ClCompile>
-    <ClCompile Include="Steering\KinematicBody.cpp">
-      <Filter>Source\Movement</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerBody.cpp">
       <Filter>Source\Movement</Filter>
     </ClCompile>
@@ -32,9 +29,6 @@
       <Filter>Source\Movement</Filter>
     </ClCompile>
     <ClCompile Include="KinematicSteeringOutput.cpp">
-      <Filter>Source\Behaviours</Filter>
-    </ClCompile>
-    <ClCompile Include="SteeringBehaviour.cpp">
       <Filter>Source\Behaviours</Filter>
     </ClCompile>
     <ClCompile Include="Steering\SteeringOutput.cpp">
@@ -96,17 +90,11 @@
     <ClInclude Include="Character.h">
       <Filter>Header\Movement</Filter>
     </ClInclude>
-    <ClInclude Include="Steering\KinematicBody.h">
-      <Filter>Header\Movement</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerBody.h">
       <Filter>Header\Movement</Filter>
     </ClInclude>
     <ClInclude Include="StaticBody.h">
       <Filter>Header\Movement</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryMonitor.h">
-      <Filter>Header\Game</Filter>
     </ClInclude>
     <ClInclude Include="Steering\SteeringOutput.h">
       <Filter>Header\Behaviours</Filter>
@@ -114,19 +102,10 @@
     <ClInclude Include="KinematicSteeringOutput.h">
       <Filter>Header\Behaviours</Filter>
     </ClInclude>
-    <ClInclude Include="SteeringBehaviour.h">
-      <Filter>Header\Behaviours</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph.h">
-      <Filter>Header\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
     <ClInclude Include="SpriteSheet.h">
-      <Filter>Header\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
     <ClInclude Include="Alien.h">

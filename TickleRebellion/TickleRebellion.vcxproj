@@ -154,8 +154,6 @@
     <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StaticBody.cpp" />
-    <ClCompile Include="SteeringBehaviour.cpp" />
-    <ClCompile Include="Steering\KinematicBody.cpp" />
     <ClCompile Include="Steering\SteeringOutput.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -168,12 +166,9 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="Graph.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
     <ClInclude Include="Level.h" />
-    <ClInclude Include="MemoryMonitor.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="PlayerBody.h" />
     <ClInclude Include="ResourseManager.h" />
     <ClInclude Include="Scene.h" />
@@ -181,8 +176,6 @@
     <ClInclude Include="Spaceship.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="StaticBody.h" />
-    <ClInclude Include="SteeringBehaviour.h" />
-    <ClInclude Include="Steering\KinematicBody.h" />
     <ClInclude Include="Steering\SteeringOutput.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timer.h" />
