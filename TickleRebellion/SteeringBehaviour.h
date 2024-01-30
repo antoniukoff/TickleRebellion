@@ -4,8 +4,8 @@
 
 #include <VMath.h>
 #include <iostream>
-#include "KinematicBody.h"
-#include "SteeringOutput.h"
+#include "steering/KinematicBody.h"
+#include "steering/SteeringOutput.h"
 
 // abstract class
 

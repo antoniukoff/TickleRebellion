@@ -40,26 +40,11 @@
     <ClCompile Include="Steering\SteeringOutput.cpp">
       <Filter>Source\Behaviours</Filter>
     </ClCompile>
-    <ClCompile Include="Flee.cpp">
-      <Filter>Source\AI</Filter>
-    </ClCompile>
     <ClCompile Include="Level.cpp">
-      <Filter>Source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph.cpp">
-      <Filter>Source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
     <ClCompile Include="SpriteSheet.cpp">
       <Filter>Source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Seek.cpp">
-      <Filter>Source\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="KinematicSeek.cpp">
-      <Filter>Source\AI</Filter>
     </ClCompile>
     <ClCompile Include="Alien.cpp">
       <Filter>Source\Game</Filter>
@@ -73,11 +58,21 @@
     <ClCompile Include="Spaceship.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.cpp" />
-    <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="ResourseManager.cpp" />
-    <ClCompile Include="TextureCache.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourseManager.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureCache.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -122,9 +117,6 @@
     <ClInclude Include="SteeringBehaviour.h">
       <Filter>Header\Behaviours</Filter>
     </ClInclude>
-    <ClInclude Include="Flee.h">
-      <Filter>Header\AI</Filter>
-    </ClInclude>
     <ClInclude Include="Graph.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
@@ -137,29 +129,27 @@
     <ClInclude Include="Node.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Seek.h">
-      <Filter>Header\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="KinematicSeek.h">
-      <Filter>Header\AI</Filter>
-    </ClInclude>
     <ClInclude Include="Alien.h">
       <Filter>Header\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="KinematicArrive.h">
-      <Filter>Header\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="KinematicSeperation.h">
-      <Filter>Header\AI</Filter>
     </ClInclude>
     <ClInclude Include="Spaceship.h">
       <Filter>Header\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Gun.h" />
-    <ClInclude Include="Bullet.h" />
-    <ClInclude Include="ResourseManager.h" />
-    <ClInclude Include="TextureCache.h" />
-    <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="Bullet.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureCache.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Gun.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourseManager.h">
+      <Filter>Header\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -185,9 +175,6 @@
     </Filter>
     <Filter Include="Source\Behaviours">
       <UniqueIdentifier>{66eebd98-bf63-432a-a768-6b60bd0e087d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header\AI">
-      <UniqueIdentifier>{30674e9c-c415-4368-b75a-5aa805fc094d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\AI">
       <UniqueIdentifier>{bea73e54-c051-49cf-a79f-03d66e97df98}</UniqueIdentifier>
