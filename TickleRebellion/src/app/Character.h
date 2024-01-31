@@ -2,9 +2,8 @@
 #define CHARACTER_H
 
 #include <vector>
-#include "Scene.h"
-#include "StaticBody.h"
-#include "Graph.h"
+#include "../core/Scene.h"
+#include "../core/physics/StaticBody.h"
 
 using namespace std;
 

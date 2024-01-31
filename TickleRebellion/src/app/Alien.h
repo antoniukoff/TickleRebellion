@@ -1,7 +1,8 @@
 #pragma once
-#include "StaticBody.h"
-#include "KinematicSteeringOutput.h"
+
 #include <vector>
+#include "../core/physics/StaticBody.h"
+#include "../core/ai/KinematicSteeringOutput.h"
 class Scene;
 
 static enum class Movement {

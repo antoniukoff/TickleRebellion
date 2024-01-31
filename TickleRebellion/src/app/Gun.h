@@ -3,7 +3,7 @@
 #include <vector>
 #include "Bullet.h"
 #include "Vector.h"
-#include "AudioManager.h"
+#include "../core/AudioManager.h"
 
 class Gun
 {

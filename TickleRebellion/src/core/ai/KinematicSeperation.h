@@ -3,9 +3,8 @@
 
 #include <Vector.h>
 #include "VMath.h"
-#include "Body.h"
+#include "../physics/StaticBody.h"
 #include "KinematicSteeringOutput.h"
-#include "StaticBody.h"
 #include <vector>
 using namespace MATH;
 

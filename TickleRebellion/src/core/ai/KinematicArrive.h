@@ -1,7 +1,7 @@
 #pragma once
 #include <Vector.h>
 #include <VMath.h>
-#include "Body.h"
+#include "../physics/Body.h"
 #include "KinematicSteeringOutput.h"
 
 using namespace MATH;

@@ -3,9 +3,9 @@
 #include <SDL.h>
 #include <iostream>
 #include "Window.h"
-#include "Timer.h"
-#include "Scene.h"
-#include "PlayerBody.h"
+#include "../utils/Timer.h"
+#include "../core/Scene.h"
+#include "physics/PlayerBody.h"
 
 
 class GameManager {

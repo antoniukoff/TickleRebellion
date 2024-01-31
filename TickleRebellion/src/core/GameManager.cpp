@@ -1,5 +1,5 @@
 #include "GameManager.h"
-#include "Scene1.h"
+#include "../app/Scene1.h"
 //#include "MemoryMonitor.h"
 
 GameManager::GameManager() {

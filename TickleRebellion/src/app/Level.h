@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 #include <SDL.h>
-#include "SpriteSheet.h"
 #include <random>
+#include "../utils/SpriteSheet.h"
 
 class Scene;
 class Turret;

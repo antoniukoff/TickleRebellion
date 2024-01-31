@@ -2,7 +2,7 @@
 #define STATIC_BODY_H
 
 #include "Body.h"
-#include "steering/SteeringOutput.h"
+#include "../ai/steering/SteeringOutput.h"
 
 class StaticBody :
 	public Body

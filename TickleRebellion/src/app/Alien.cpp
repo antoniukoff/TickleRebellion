@@ -1,11 +1,11 @@
 #include "Alien.h"
-#include "Scene.h"
-#include "KinematicArrive.h"
-#include "KinematicSeperation.h"
-#include "SpriteSheet.h"
+#include "../core/Scene.h"
+#include "../core/ai/KinematicArrive.h"
+#include "../core/ai/KinematicSeperation.h"
+#include "../utils/SpriteSheet.h"
 #include <vector>
 #include <random>
-#include "ResourseManager.h"
+#include "../utils/ResourseManager.h"
 
 Alien::Alien(Vec3 pos_, Scene* scene_, std::string filename)
 	: body(nullptr), scene(scene_)

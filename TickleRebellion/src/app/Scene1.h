@@ -1,17 +1,16 @@
 #ifndef SCENE1_H
 #define SCENE1_H
 
+#include <array>
 #include <MMath.h>
 #include <VMath.h>
-#include "Scene.h"
-#include "Character.h"
-#include "Alien.h"
-#include "Spaceship.h"
-#include "StaticBody.h"
-#include "Level.h"
 #include "Gun.h"
-#include "AudioManager.h"
-#include <array>
+#include "Level.h"
+#include "Alien.h"
+#include "Character.h"
+#include "Spaceship.h"
+#include "../core/Scene.h"
+#include "../core/AudioManager.h"
 
 using namespace MATH;
 class Scene1 : public Scene {

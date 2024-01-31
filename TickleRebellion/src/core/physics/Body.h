@@ -5,7 +5,7 @@
 #include <VMath.h>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "KinematicSteeringOutput.h"
+#include "../ai/KinematicSteeringOutput.h"
 
 using namespace MATH;
 

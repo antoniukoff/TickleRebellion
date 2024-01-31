@@ -1,4 +1,4 @@
-#include "ResourseManager.h"
+#include "../utils/ResourseManager.h"
 
 TextureCache ResourceManager::_textureCache	;
 

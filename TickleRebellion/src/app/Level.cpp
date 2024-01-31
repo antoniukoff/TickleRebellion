@@ -2,8 +2,8 @@
 #include "fstream"
 #include <iostream>
 #include "SDL_image.h"
-#include "Scene.h"
-#include "Node.h"
+#include "../core/Scene.h"
+#include "../core/Node.h"
 
 
 std::mt19937 Level::randomEngine = std::mt19937(std::random_device()());
@@ -32,7 +32,7 @@ Level::Level(const std::string& fileName, Scene* scene)
     }
     file.close();
 
-    SDL_Surface* surface = IMG_Load("fondo.png");
+    SDL_Surface* surface = IMG_Load("assets/sprites/fondo.png");
     if (surface == nullptr) {
 		throw std::runtime_error("Incorrect filepath");
 	}

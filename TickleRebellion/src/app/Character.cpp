@@ -1,8 +1,6 @@
 #include "Character.h"
-#include "SpriteSheet.h"
-#include "PlayerBody.h"
-#include "KinematicSeek.h"
-#include "KinematicSeek.h"
+#include "../utils/SpriteSheet.h"
+#include "../core/physics/PlayerBody.h"
 #include <random>
 
 static std::mt19937 randomEngine(time(nullptr));

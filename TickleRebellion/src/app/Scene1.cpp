@@ -1,8 +1,7 @@
 #include "Scene1.h"
-#include "KinematicSeek.h"
 #include <algorithm>
-#include "ResourseManager.h"
-
+#include "../utils/ResourseManager.h"
+#include "../core/Node.h"
 
 std::mt19937 Scene1::mt = std::mt19937(std::random_device()());
 std::uniform_real_distribution<float> Scene1::distX = std::uniform_real_distribution<float>();
@@ -31,8 +30,8 @@ bool Scene1::OnCreate() {
 	IMG_Init(IMG_INIT_PNG);
 	
 	/// Map and initial character set up 
-	level = Level("Level1.txt", this);
-	level.loadMap(12, 11, "tilemap.png");
+	level = Level("assets/levels/Level1.txt", this);
+	level.loadMap(12, 11, "assets/sprites/tilemap.png");
 	level.sortTiles();
 	// Set player image to PacMan
 	float floatMin= std::numeric_limits<float>::min();
@@ -50,16 +49,16 @@ bool Scene1::OnCreate() {
 	distY = std::uniform_real_distribution<float>(0.0f, game->getEndBoundary());
 
 	myCharacter = new Character();
-	myCharacter->OnCreate(this, "human_base.png", Vec3{ 10.0f, 0.0f, 0.0f });
+	myCharacter->OnCreate(this, "assets/sprites/human_base.png", Vec3{ 10.0f, 0.0f, 0.0f });
 
-	spaceship = new Spaceship(renderer, "NAVE.png");
+	spaceship = new Spaceship(renderer, "assets/sprites/NAVE.png");
 
 	audioEngine.init();
-	Music music = audioEngine.loadMusic("OutThere.ogg");
+	Music music = audioEngine.loadMusic("assets/sounds/OutThere.ogg");
 
 	music.play(-1);
 
-	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f, audioEngine.loadSoundEffect("powerup_02.wav"));
+	gun = new Gun("pistol", 1, 1, 0.0f, 1.0f, 500.0f, audioEngine.loadSoundEffect("assets/sounds/powerup_02.wav"));
 
 	currentWave = 0;
 
@@ -113,7 +112,7 @@ void Scene1::Update(const float deltaTime) {
 	{
 		Vec3 yCaps = getProjectionMatrix() * Vec3 { 0.0f, this->yCap, 0.0f };
 		if (!pickedUpHands) {
-			if (bullets[i].update(deltaTime, yCaps.y + 50.0f)) {
+			if (bullets[i].update(deltaTime, yCaps.y+20.0f)) {
 				bullets[i] = bullets.back();
 				bullets.pop_back();
 			}
@@ -123,7 +122,7 @@ void Scene1::Update(const float deltaTime) {
 		}
 		else {
 			
-			bullets[i].updateSuperBullet(deltaTime, yCaps.y + 50.0f);
+			bullets[i].updateSuperBullet(deltaTime, yCaps.y);
 
 			int shipRadius = spaceship->getDims().w / 2;
 			int bulletRadius = bullets[i].getRect().w / 2;
@@ -132,7 +131,7 @@ void Scene1::Update(const float deltaTime) {
 			int distance = VMath::distance(spaceshipPos, bulletPos);
 			if (distance < shipRadius + bulletRadius) {
 				spaceship->destroyShip();
-				SoundEffect explosion = audioEngine.loadSoundEffect("explosion1.ogg");
+				SoundEffect explosion = audioEngine.loadSoundEffect("assets/sounds/explosion1.ogg");
 				explosion.play();
 				bullets[i] = bullets.back();
 				bullets.pop_back();
@@ -159,7 +158,7 @@ void Scene1::Update(const float deltaTime) {
 		for (int j = 0; j < aliens[currentWave].size() && !bulletRemoved; j++) {
 			if (bullets[i].collideWithAgent(aliens[currentWave][j], this))
 			{
-				SoundEffect tickEffect = audioEngine.loadSoundEffect("witch_cackle-1.ogg");
+				SoundEffect tickEffect = audioEngine.loadSoundEffect("assets/sounds/witch_cackle-1.ogg");
 				tickEffect.play();
 				bullets.erase(bullets.begin() + i);
 				if (currentWave == 2  && aliens[currentWave].size() == 1) {
@@ -281,7 +280,7 @@ void Scene1::spawnAlien()
 			if (totalCount < Waves[currentWave])
 			{
 				Vec3 position = { distX(mt), distY(mt), 0.0f };
-				Alien* alien = new Alien(position, this, "SHEET.PNG");
+				Alien* alien = new Alien(position, this, "assets/sprites/SHEET.PNG");
 				aliens[currentWave].push_back(alien);
 				totalCount++;
 			}
@@ -314,7 +313,7 @@ bool Scene1::hasPickedUpHands() {
 
 void Scene1::spawnBigHands(Alien* alien) 
 {
-	bigHandTexture = ResourceManager::getTexture("hands.png", renderer);
+	bigHandTexture = ResourceManager::getTexture("assets/sprites/hands.png", renderer);
 	int w, h;
 	SDL_QueryTexture(bigHandTexture, NULL, NULL, &w, &h);
 	bigHandRect = { (int)(getProjectionMatrix() * alien->getBody()->getPos()).x - (w / 4) / 2, (int)(getProjectionMatrix() * alien->getBody()->getPos()).y - (h / 4) / 2, w / 4 , h / 4 };

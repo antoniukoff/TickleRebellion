@@ -1,11 +1,11 @@
 #include "Spaceship.h"
-#include "SpriteSheet.h"
-#include "ResourseManager.h"
+#include "../utils/SpriteSheet.h"
+#include "../utils/ResourseManager.h"
 Spaceship::Spaceship(SDL_Renderer* renderer, const char* path)
 	: renderer(renderer)
 {
 	loadTexture(path, renderer);
-	loadBeamTexture("Luz nave.png", renderer);
+	loadBeamTexture("assets/sprites/Luz nave.png", renderer);
 }
 
 Spaceship::~Spaceship()
@@ -68,7 +68,7 @@ void Spaceship::render()
 	else if (direction == State::DESTROYED)
 	{
 		if (!destroyTexture) {
-			destroyTexture = ResourceManager::getTexture("ExplosionSetPRE2.png", renderer);
+			destroyTexture = ResourceManager::getTexture("assets/sprites/ExplosionSetPRE2.png", renderer);
 		}
 		SpriteSheet::QuerySpriteSheet(6, 1, destroyTexture);
 		int numFrames = 6;

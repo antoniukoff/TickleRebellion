@@ -1,5 +1,5 @@
 #include <iostream>
-#include "GameManager.h"
+#include "core/GameManager.h"
 //#include "MemoryMonitor.h"
 
 

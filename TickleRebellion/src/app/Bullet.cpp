@@ -1,9 +1,9 @@
 #include "Bullet.h"
 #include "Level.h"
 #include "Alien.h"
-#include "Scene.h"
-#include "SpriteSheet.h"
-#include "ResourseManager.h"
+#include "../core/Scene.h"
+#include "../utils/SpriteSheet.h"
+#include "../utils/ResourseManager.h"
 
 Bullet::Bullet(MATH::Vec3 position, MATH::Vec3 direction, float damage, float speed)
 {
@@ -40,7 +40,7 @@ void Bullet::draw(SDL_Renderer* renderer, Scene* scene)
 
 
 	if (!m_texture) {
-		m_texture = ResourceManager::getTexture("hands.png", renderer);
+		m_texture = ResourceManager::getTexture("assets/sprites/hands.png", renderer);
 	}
 
 	SDL_Rect rect = { m_position.x - 30.0f, m_position.y - 50.0f , 100.0f * scale, 100.0f * scale };
@@ -51,7 +51,7 @@ void Bullet::draw(SDL_Renderer* renderer, Scene* scene)
 void Bullet::drawSuperBullet(SDL_Renderer* renderer, Scene* scene)
 {
 	if (!m_texture) {
-		m_texture = ResourceManager::getTexture("hands.png", renderer);
+		m_texture = ResourceManager::getTexture("assets/sprites/hands.png", renderer);
 	}
 
 	SDL_Rect rect = { m_position.x - 30.0f, m_position.y - 50.0f , 100.0f, 100.0f};

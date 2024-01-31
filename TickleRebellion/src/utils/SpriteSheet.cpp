@@ -1,4 +1,4 @@
-#include "SpriteSheet.h"
+#include "../utils/SpriteSheet.h"
 class Tile;
 
 int SpriteSheet::w = 0;
